@@ -32,7 +32,7 @@ class BubbleSortViewModel @Inject constructor(
         return BubbleSortList(list = list)
     }
 
-    fun randomList(size: Int = 9) {
+    fun randomList(size: Int = listToSort.value.list.size) {
         _listToSort.value = getSortingList(size)
     }
 

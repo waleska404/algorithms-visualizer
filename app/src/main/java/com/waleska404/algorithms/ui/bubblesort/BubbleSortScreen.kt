@@ -1,6 +1,7 @@
 package com.waleska404.algorithms.ui.bubblesort
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -17,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -72,7 +72,8 @@ fun BubbleSortScreen(
         BottomButtons(
             startSorting = sortViewModel::startSorting,
             randomList = sortViewModel::randomList,
-            sliderChange = sortViewModel::randomList
+            sliderChange = sortViewModel::randomList,
+            listSizeInit = listToSort.list.size
         )
     }
 }
@@ -127,7 +128,7 @@ fun BubbleSortItem(
     }
     val itemHeight = (item.value * totalHeight.value / 100) - 40
     Column(
-        modifier = modifier.wrapContentSize(),
+        modifier = modifier,
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -135,7 +136,6 @@ fun BubbleSortItem(
             modifier = Modifier
                 .width(30.dp)
                 .height(itemHeight.dp)
-                .padding(6.dp)
                 .background(item.color, RoundedCornerShape(15.dp))
                 .border(borderStroke, RoundedCornerShape(15.dp)),
         )
@@ -163,29 +163,43 @@ fun BottomButtons(
     startSorting: () -> Unit,
     randomList: () -> Unit,
     sliderChange: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    listSizeInit: Int,
 ) {
     // TODO: disable buttons and slider if the list is ordering
     // TODO ADD ICONS TO BUTTONS
-    var sliderValue by remember { mutableFloatStateOf(0f) }
+    var sliderValue by remember { mutableFloatStateOf(listSizeInit.toFloat()) }
     Column(
         modifier = modifier
     ) {
         // range slider
-        CustomSlider(
-            value = sliderValue,
-            valueRange = 1f..30f,
-            onValueChange = {
-                sliderValue = it
-                sliderChange(sliderValue.toInt())
-            },
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "List Size:",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            CustomSlider(
+                modifier = Modifier.weight(1f),
+                value = sliderValue,
+                valueRange = 1f..30f,
+                onValueChange = {
+                    val newValue = it.toInt()
+                    if(newValue != sliderValue.toInt()) {
+                        Log.i("MYTAG", "New value: $newValue, old value: ${sliderValue.toInt()}")
+                        sliderValue = newValue.toFloat()
+                        sliderChange(sliderValue.toInt())
+                    }
+                },
+            )
+        }
         Row {
             // random button
             Button(
                 modifier = Modifier
                     .height(40.dp)
-                    .padding(horizontal = 10.dp)
                     .weight(1f),
                 onClick = { randomList() },
             ) {
@@ -194,11 +208,11 @@ fun BottomButtons(
                     fontSize = 18.sp
                 )
             }
+            Spacer(modifier = Modifier.width(20.dp))
             // sort button
             Button(
                 modifier = Modifier
                     .height(40.dp)
-                    .padding(horizontal = 10.dp)
                     .weight(1f),
                 onClick = { startSorting() },
             ) {
