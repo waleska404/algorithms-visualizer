@@ -110,22 +110,34 @@ fun BubbleSortItem(
     } else {
         BorderStroke(width = 0.dp, Color.Transparent)
     }
-    val itemHeight = item.value * totalHeight.value / 100
-    Box(
-        modifier = modifier
-            .width(30.dp)
-            .height(itemHeight.dp)
-            .padding(6.dp)
-            .background(item.color, RoundedCornerShape(15.dp))
-            .border(borderStroke, RoundedCornerShape(15.dp)),
-        contentAlignment = Alignment.Center
+    val itemHeight = (item.value * totalHeight.value / 100) - 40
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            "${item.value}",
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp
+        Box(
+            modifier = Modifier
+                .width(30.dp)
+                .height(itemHeight.dp)
+                .padding(8.dp)
+                .background(item.color, RoundedCornerShape(15.dp))
+                .border(borderStroke, RoundedCornerShape(15.dp)),
         )
+        Box(
+            modifier = Modifier
+                .width(40.dp)
+                .height(30.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                "${item.value}",
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp
+            )
+        }
     }
+
 }
 
 
