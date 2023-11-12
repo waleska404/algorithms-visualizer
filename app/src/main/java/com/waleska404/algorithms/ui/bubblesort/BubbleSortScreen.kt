@@ -55,16 +55,22 @@ fun BubbleSortScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(20.dp),
+            .padding(15.dp),
     ) {
-        Text(text = "Bubble Sort", fontWeight = FontWeight.Bold, fontSize = 30.sp)
-        Spacer(modifier = Modifier.weight(0.05f))
+        Text(
+            text = "Bubble Sort",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.height(10.dp))
         SortingList(
             modifier = Modifier.weight(0.7f),
             listToSort = listToSort.list
         )
-        Spacer(modifier = Modifier.weight(0.05f))
-        BottomButtons( startSorting = sortViewModel::startSorting )
+        Spacer(modifier = Modifier.height(10.dp))
+        BottomButtons(
+            startSorting = sortViewModel::startSorting,
+        )
     }
 }
 
@@ -108,7 +114,7 @@ fun SortingList(
 @Composable
 fun BubbleSortItem(
     item: BubbleSortItem,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     totalHeight: Dp
 ) {
     val borderStroke = if (item.isCurrentlyCompared) {
@@ -126,7 +132,7 @@ fun BubbleSortItem(
             modifier = Modifier
                 .width(30.dp)
                 .height(itemHeight.dp)
-                .padding(8.dp)
+                .padding(6.dp)
                 .background(item.color, RoundedCornerShape(15.dp))
                 .border(borderStroke, RoundedCornerShape(15.dp)),
         )
@@ -151,43 +157,45 @@ fun BubbleSortItem(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BottomButtons(
-    startSorting: () -> Unit
+    startSorting: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     // TODO ADD ICONS TO BUTTONS
     var sliderValue by remember { mutableFloatStateOf(0f) }
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         // range slider
         CustomSlider(
             value = sliderValue,
-            valueRange = 15f..100f,
+            valueRange = 1f..30f,
             onValueChange = { sliderValue = it },
         )
         Row {
             // random button
             Button(
                 modifier = Modifier
-                    .padding(6.dp)
+                    .height(40.dp)
+                    .padding(horizontal = 10.dp)
                     .weight(1f),
                 onClick = { },
             ) {
                 Text(
                     "Random List",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
+                    fontSize = 18.sp
                 )
             }
-
             // sort button
             Button(
                 modifier = Modifier
-                    .padding(6.dp)
+                    .height(40.dp)
+                    .padding(horizontal = 10.dp)
                     .weight(1f),
                 onClick = { startSorting() },
             ) {
                 Text(
                     "Sort List",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
+                    fontSize = 18.sp
                 )
             }
         }

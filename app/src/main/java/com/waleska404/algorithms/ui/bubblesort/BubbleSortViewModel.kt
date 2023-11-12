@@ -25,7 +25,7 @@ class BubbleSortViewModel @Inject constructor(
             BubbleSortItem(
                 id = it,
                 isCurrentlyCompared = false,
-                value = (15..100).random(),
+                value = (30..100).random(),
                 color = Color.Red
             )
         }
