@@ -8,12 +8,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,10 +22,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,12 +44,11 @@ fun BubbleSortScreen(
     val listToSort: BubbleSortList by sortViewModel.listToSort.collectAsState()
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Gray)
             .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Button(
             onClick = { sortViewModel.startSorting() },
@@ -54,45 +59,76 @@ fun BubbleSortScreen(
                 fontSize = 22.sp
             )
         }
-        SortingList(listToSort = listToSort.list)
+        Spacer(modifier = Modifier.weight(0.1f))
+        SortingList(
+            modifier = Modifier.weight(0.7f),
+            listToSort = listToSort.list
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SortingList(listToSort: List<BubbleSortItem>) {
+fun SortingList(
+    listToSort: List<BubbleSortItem>,
+    modifier: Modifier
+) {
+    val localDensity = LocalDensity.current
+    var heightIs by remember {
+        mutableStateOf(0.dp)
+    }
     LazyRow(
-        modifier = Modifier,
-        horizontalArrangement = Arrangement.spacedBy(15.dp)
-    ){
+        modifier = modifier
+            .background(Color.Magenta)
+            .fillMaxWidth()
+            .onGloballyPositioned { coordinates ->
+                heightIs = with(localDensity) { coordinates.size.height.toDp() }
+            },
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Bottom
+    ) {
         items(
             listToSort,
             key = {
                 it.id
             }
-        ){
-            val borderStroke = if(it.isCurrentlyCompared){
-                BorderStroke(width = 3.dp, Color.White,)
-            }else{
-                BorderStroke(width = 0.dp, Color.Transparent)
-            }
-            Box(
-                modifier = Modifier
-                    .width(15.dp)
-                    .height(it.value.dp)
-                    .background(it.color, RoundedCornerShape(15.dp))
-                    .border(borderStroke, RoundedCornerShape(15.dp))
-                    .animateItemPlacement(
-                        tween(300)
-                    ),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    "${it.value}",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
-                )
-            }
+        ) {
+            BubbleSortItem(
+                item = it,
+                modifier = Modifier.animateItemPlacement(
+                    tween(300)
+                ),
+                totalHeight = heightIs
+            )
         }
+    }
+}
+
+@Composable
+fun BubbleSortItem(
+    item: BubbleSortItem,
+    modifier: Modifier,
+    totalHeight: Dp
+) {
+    val borderStroke = if (item.isCurrentlyCompared) {
+        BorderStroke(width = 3.dp, Color.White)
+    } else {
+        BorderStroke(width = 0.dp, Color.Transparent)
+    }
+    val itemHeight = item.value * totalHeight.value / 100
+    Box(
+        modifier = modifier
+            .width(30.dp)
+            .height(itemHeight.dp)
+            .padding(6.dp)
+            .background(item.color, RoundedCornerShape(15.dp))
+            .border(borderStroke, RoundedCornerShape(15.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            "${item.value}",
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp
+        )
     }
 }

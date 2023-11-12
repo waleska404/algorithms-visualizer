@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.Random
 import javax.inject.Inject
 
 
@@ -26,7 +25,7 @@ class BubbleSortViewModel @Inject constructor(
             BubbleSortItem(
                 id = it,
                 isCurrentlyCompared = false,
-                value = Random().nextInt(150),
+                value = (15..100).random(),
                 color = Color.Red
             )
         }
