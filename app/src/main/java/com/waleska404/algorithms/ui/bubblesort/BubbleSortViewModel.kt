@@ -20,8 +20,8 @@ class BubbleSortViewModel @Inject constructor(
     private var _listToSort = MutableStateFlow(getSortingList())
     val listToSort: StateFlow<BubbleSortList> = _listToSort
 
-    private fun getSortingList(): BubbleSortList {
-        val list =  (0 until 9).map {
+    private fun getSortingList(size: Int = 9): BubbleSortList {
+        val list = (0 until size).map {
             BubbleSortItem(
                 id = it,
                 isCurrentlyCompared = false,
@@ -30,6 +30,10 @@ class BubbleSortViewModel @Inject constructor(
             )
         }
         return BubbleSortList(list = list)
+    }
+
+    fun randomList(size: Int = 9) {
+        _listToSort.value = getSortingList(size)
     }
 
     fun startSorting() {
@@ -56,7 +60,7 @@ class BubbleSortViewModel @Inject constructor(
                 }
 
                 // there is no changes in the list
-                if(bubbleSortInfo.hadNoEffect) {
+                if (bubbleSortInfo.hadNoEffect) {
                     val newListEffect = _listToSort.value.list.toMutableList()
                     newListEffect[index] = newListEffect[index].copy(isCurrentlyCompared = false)
                     newListEffect[index + 1] = newListEffect[index + 1].copy(isCurrentlyCompared = false)

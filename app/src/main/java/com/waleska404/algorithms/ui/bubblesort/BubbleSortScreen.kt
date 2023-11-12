@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -70,6 +71,8 @@ fun BubbleSortScreen(
         Spacer(modifier = Modifier.height(10.dp))
         BottomButtons(
             startSorting = sortViewModel::startSorting,
+            randomList = sortViewModel::randomList,
+            sliderChange = sortViewModel::randomList
         )
     }
 }
@@ -124,7 +127,7 @@ fun BubbleSortItem(
     }
     val itemHeight = (item.value * totalHeight.value / 100) - 40
     Column(
-        modifier = modifier,
+        modifier = modifier.wrapContentSize(),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -158,8 +161,11 @@ fun BubbleSortItem(
 @Composable
 fun BottomButtons(
     startSorting: () -> Unit,
+    randomList: () -> Unit,
+    sliderChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // TODO: disable buttons and slider if the list is ordering
     // TODO ADD ICONS TO BUTTONS
     var sliderValue by remember { mutableFloatStateOf(0f) }
     Column(
@@ -169,7 +175,10 @@ fun BottomButtons(
         CustomSlider(
             value = sliderValue,
             valueRange = 1f..30f,
-            onValueChange = { sliderValue = it },
+            onValueChange = {
+                sliderValue = it
+                sliderChange(sliderValue.toInt())
+            },
         )
         Row {
             // random button
@@ -178,7 +187,7 @@ fun BottomButtons(
                     .height(40.dp)
                     .padding(horizontal = 10.dp)
                     .weight(1f),
-                onClick = { },
+                onClick = { randomList() },
             ) {
                 Text(
                     "Random List",
