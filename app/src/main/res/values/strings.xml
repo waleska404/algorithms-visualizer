@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Algorithms</string>
+    <string name="sort_icon">sort icon</string>
 </resources>

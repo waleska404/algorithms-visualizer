@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,6 +40,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.waleska404.algorithms.R
+import com.waleska404.algorithms.ui.core.components.CustomIconButton
 import com.waleska404.algorithms.ui.core.components.CustomSlider
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -202,32 +203,26 @@ fun BottomButtons(
         }
         Row {
             // random button
-            Button(
-                modifier = Modifier
-                    .height(40.dp)
-                    .weight(1f),
+            CustomIconButton(
+                modifier = Modifier.weight(1f),
+                text = "Random",
                 onClick = { randomList() },
-                enabled = !isSorting,
-            ) {
-                Text(
-                    "Random List",
-                    fontSize = 18.sp
-                )
-            }
+                iconResource = R.drawable.shuffle,
+                iconDescriptionResource = R.string.sort_icon,
+                iconTint = Color.White,
+                enabled = !isSorting
+            )
             Spacer(modifier = Modifier.width(20.dp))
             // sort button
-            Button(
-                modifier = Modifier
-                    .height(40.dp)
-                    .weight(1f),
+            CustomIconButton(
+                modifier = Modifier.weight(1f),
+                text = "Sort",
                 onClick = { startSorting() },
-                enabled = !isSorting,
-            ) {
-                Text(
-                    "Sort List",
-                    fontSize = 18.sp
-                )
-            }
+                iconResource = R.drawable.sort,
+                iconDescriptionResource = R.string.sort_icon,
+                iconTint = Color.White,
+                enabled = !isSorting
+            )
         }
     }
 
