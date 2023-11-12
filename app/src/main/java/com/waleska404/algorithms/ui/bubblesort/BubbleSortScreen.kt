@@ -1,5 +1,7 @@
 package com.waleska404.algorithms.ui.bubblesort
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,10 +21,12 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,7 +40,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.waleska404.algorithms.ui.core.components.CustomSlider
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BubbleSortScreen(
     sortViewModel: BubbleSortViewModel = hiltViewModel(),
@@ -141,13 +147,21 @@ fun BubbleSortItem(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BottomButtons(
     startSorting: () -> Unit
 ) {
     // TODO ADD ICONS TO BUTTONS
+    var sliderValue by remember { mutableFloatStateOf(0f) }
     Column {
-        // range value
+        // range slider
+        CustomSlider(
+            value = sliderValue,
+            valueRange = 15f..100f,
+            onValueChange = { sliderValue = it },
+        )
         Row {
             // random button
             Button(
