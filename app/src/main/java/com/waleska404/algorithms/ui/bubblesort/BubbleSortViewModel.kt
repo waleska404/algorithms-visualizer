@@ -1,6 +1,5 @@
 package com.waleska404.algorithms.ui.bubblesort
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,12 +39,10 @@ class BubbleSortViewModel @Inject constructor(
     }
 
     fun startSorting() {
-        Log.i("TAG", "startSorting")
         val dataList = _listToSort.value.toDataList()
         _isSorting.value = true
         viewModelScope.launch {
             bubbleSort.runBubbleSort(dataList).collect { bubbleSortInfo ->
-                Log.i("TAG", "runBubbleSort COLLECT, $bubbleSortInfo")
                 val index = bubbleSortInfo.currentItem
 
                 // mark current items as being compared

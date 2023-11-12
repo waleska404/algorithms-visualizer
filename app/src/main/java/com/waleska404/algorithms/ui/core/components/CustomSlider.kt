@@ -41,6 +41,8 @@ import kotlin.math.roundToInt
  * @param showIndicator Determines whether to show indicators on the slider.
  * @param showLabel Determines whether to show a label above the slider.
  * @param enabled Determines whether the slider is enabled for interaction.
+ * @param color The color of the slider when it is enabled.
+ * @param disabledColor The color of the slider when it is disabled.
  * @param thumb The composable used to display the thumb of the slider.
  * @param track The composable used to display the track of the slider.
  * @param indicator The composable used to display the indicators on the slider.

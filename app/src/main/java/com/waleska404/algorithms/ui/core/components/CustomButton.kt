@@ -38,7 +38,8 @@ fun CustomIconButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = iconResource),

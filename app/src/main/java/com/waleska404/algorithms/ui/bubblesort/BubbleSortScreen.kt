@@ -1,7 +1,6 @@
 package com.waleska404.algorithms.ui.bubblesort
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -35,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -61,7 +61,7 @@ fun BubbleSortScreen(
             .padding(15.dp),
     ) {
         Text(
-            text = "Bubble Sort",
+            text = stringResource(id = R.string.bubble_sort_title),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -170,7 +170,6 @@ fun BottomButtons(
     listSizeInit: Int,
     isSorting: Boolean
 ) {
-    // TODO ADD ICONS TO BUTTONS
     var sliderValue by remember { mutableFloatStateOf(listSizeInit.toFloat()) }
     Column(
         modifier = modifier
@@ -180,7 +179,7 @@ fun BottomButtons(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "List Size:",
+                text = stringResource(id = R.string.list_size),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -191,8 +190,7 @@ fun BottomButtons(
                 enabled = !isSorting,
                 onValueChange = {
                     val newValue = it.toInt()
-                    if(newValue != sliderValue.toInt()) {
-                        Log.i("MYTAG", "New value: $newValue, old value: ${sliderValue.toInt()}")
+                    if (newValue != sliderValue.toInt()) {
                         sliderValue = newValue.toFloat()
                         sliderChange(sliderValue.toInt())
                     }
@@ -205,7 +203,7 @@ fun BottomButtons(
             // random button
             CustomIconButton(
                 modifier = Modifier.weight(1f),
-                text = "Random",
+                text = stringResource(id = R.string.random),
                 onClick = { randomList() },
                 iconResource = R.drawable.shuffle,
                 iconDescriptionResource = R.string.sort_icon,
@@ -216,7 +214,7 @@ fun BottomButtons(
             // sort button
             CustomIconButton(
                 modifier = Modifier.weight(1f),
-                text = "Sort",
+                text = stringResource(id = R.string.sort),
                 onClick = { startSorting() },
                 iconResource = R.drawable.sort,
                 iconDescriptionResource = R.string.sort_icon,
@@ -225,5 +223,4 @@ fun BottomButtons(
             )
         }
     }
-
 }

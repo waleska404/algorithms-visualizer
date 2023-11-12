@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Algorithms</string>
     <string name="sort_icon">sort icon</string>
+    <string name="bubble_sort_title">Bubble Sort</string>
+    <string name="list_size">List Size:</string>
+    <string name="random">Random</string>
+    <string name="sort">Sort</string>
 </resources>
