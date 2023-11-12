@@ -8,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,23 +48,17 @@ fun BubbleSortScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Gray)
+            .background(Color.White)
             .padding(20.dp),
     ) {
-        Button(
-            onClick = { sortViewModel.startSorting() },
-        ) {
-            Text(
-                "Sort List",
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp
-            )
-        }
-        Spacer(modifier = Modifier.weight(0.1f))
+        Text(text = "Bubble Sort", fontWeight = FontWeight.Bold, fontSize = 30.sp)
+        Spacer(modifier = Modifier.weight(0.05f))
         SortingList(
             modifier = Modifier.weight(0.7f),
             listToSort = listToSort.list
         )
+        Spacer(modifier = Modifier.weight(0.05f))
+        BottomButtons( startSorting = sortViewModel::startSorting )
     }
 }
 
@@ -79,7 +74,7 @@ fun SortingList(
     }
     LazyRow(
         modifier = modifier
-            .background(Color.Magenta)
+            .background(Color.White)
             .fillMaxWidth()
             .onGloballyPositioned { coordinates ->
                 heightIs = with(localDensity) { coordinates.size.height.toDp() }
@@ -111,7 +106,7 @@ fun BubbleSortItem(
     totalHeight: Dp
 ) {
     val borderStroke = if (item.isCurrentlyCompared) {
-        BorderStroke(width = 3.dp, Color.White)
+        BorderStroke(width = 3.dp, Color.Blue)
     } else {
         BorderStroke(width = 0.dp, Color.Transparent)
     }
@@ -131,4 +126,45 @@ fun BubbleSortItem(
             fontSize = 22.sp
         )
     }
+}
+
+
+@Composable
+fun BottomButtons(
+    startSorting: () -> Unit
+) {
+    // TODO ADD ICONS TO BUTTONS
+    Column {
+        // range value
+        Row {
+            // random button
+            Button(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .weight(1f),
+                onClick = { },
+            ) {
+                Text(
+                    "Random List",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp
+                )
+            }
+
+            // sort button
+            Button(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .weight(1f),
+                onClick = { startSorting() },
+            ) {
+                Text(
+                    "Sort List",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp
+                )
+            }
+        }
+    }
+
 }
