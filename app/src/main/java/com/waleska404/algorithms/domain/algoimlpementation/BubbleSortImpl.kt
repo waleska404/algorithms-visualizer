@@ -13,9 +13,10 @@ class BubbleSortImpl @Inject constructor() : BubbleSort {
     override fun runBubbleSort(list: MutableList<Int>): Flow<BubbleSortInfo> = flow {
         Log.i("MYTAG", "runBubbleSort, $list")
         var size = list.size - 1
-        while (size > 1) {
+        while (size > 0) {
             var innerIndex = 0
             while (innerIndex < size) {
+                Log.i("MYTAG", "runBubbleSort, $innerIndex, size: $size")
                 // select the two elements to compare
                 val currentItem = list[innerIndex]
                 val nextItem = list[innerIndex + 1]
