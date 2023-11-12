@@ -17,6 +17,9 @@ class BubbleSortViewModel @Inject constructor(
     private val bubbleSort: BubbleSort
 ) : ViewModel() {
 
+    private var _isSorting = MutableStateFlow(false)
+    val isSorting: StateFlow<Boolean> = _isSorting
+
     private var _listToSort = MutableStateFlow(getSortingList())
     val listToSort: StateFlow<BubbleSortList> = _listToSort
 
@@ -39,6 +42,7 @@ class BubbleSortViewModel @Inject constructor(
     fun startSorting() {
         Log.i("TAG", "startSorting")
         val dataList = _listToSort.value.toDataList()
+        _isSorting.value = true
         viewModelScope.launch {
             bubbleSort.runBubbleSort(dataList).collect { bubbleSortInfo ->
                 Log.i("TAG", "runBubbleSort COLLECT, $bubbleSortInfo")
@@ -67,6 +71,7 @@ class BubbleSortViewModel @Inject constructor(
                     _listToSort.value = _listToSort.value.copy(list = newListEffect)
                 }
             }
+            _isSorting.value = false
         }
 
     }

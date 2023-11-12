@@ -50,6 +50,7 @@ fun BubbleSortScreen(
 ) {
 
     val listToSort: BubbleSortList by sortViewModel.listToSort.collectAsState()
+    val isSorting: Boolean by sortViewModel.isSorting.collectAsState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,7 +74,8 @@ fun BubbleSortScreen(
             startSorting = sortViewModel::startSorting,
             randomList = sortViewModel::randomList,
             sliderChange = sortViewModel::randomList,
-            listSizeInit = listToSort.list.size
+            listSizeInit = listToSort.list.size,
+            isSorting = isSorting
         )
     }
 }
@@ -165,8 +167,8 @@ fun BottomButtons(
     sliderChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
     listSizeInit: Int,
+    isSorting: Boolean
 ) {
-    // TODO: disable buttons and slider if the list is ordering
     // TODO ADD ICONS TO BUTTONS
     var sliderValue by remember { mutableFloatStateOf(listSizeInit.toFloat()) }
     Column(
@@ -185,6 +187,7 @@ fun BottomButtons(
                 modifier = Modifier.weight(1f),
                 value = sliderValue,
                 valueRange = 1f..30f,
+                enabled = !isSorting,
                 onValueChange = {
                     val newValue = it.toInt()
                     if(newValue != sliderValue.toInt()) {
@@ -193,6 +196,8 @@ fun BottomButtons(
                         sliderChange(sliderValue.toInt())
                     }
                 },
+                color = Color.Black,
+                disabledColor = Color.LightGray
             )
         }
         Row {
@@ -202,6 +207,7 @@ fun BottomButtons(
                     .height(40.dp)
                     .weight(1f),
                 onClick = { randomList() },
+                enabled = !isSorting,
             ) {
                 Text(
                     "Random List",
@@ -215,6 +221,7 @@ fun BottomButtons(
                     .height(40.dp)
                     .weight(1f),
                 onClick = { startSorting() },
+                enabled = !isSorting,
             ) {
                 Text(
                     "Sort List",

@@ -58,11 +58,19 @@ fun CustomSlider(
     showIndicator: Boolean = false,
     showLabel: Boolean = false,
     enabled: Boolean = true,
-    thumb: @Composable (thumbValue: Int) -> Unit = {
-        CustomSliderDefaults.Thumb(it.toString())
+    color: Color,
+    disabledColor: Color,
+    thumb: @Composable (thumbValue: Int, color: Color) -> Unit = { thumbValue, thumbCustomColor ->
+        CustomSliderDefaults.Thumb(
+            thumbValue = thumbValue.toString(),
+            color = thumbCustomColor
+        )
     },
-    track: @Composable (sliderPositions: SliderPositions) -> Unit = { sliderPositions ->
-        CustomSliderDefaults.Track(sliderPositions = sliderPositions)
+    track: @Composable (sliderPositions: SliderPositions, color: Color) -> Unit = { sliderPositions, trackCustomColor ->
+        CustomSliderDefaults.Track(
+            sliderPositions = sliderPositions,
+            progressColor = trackCustomColor
+        )
     },
     indicator: @Composable (indicatorValue: Int) -> Unit = { indicatorValue ->
         CustomSliderDefaults.Indicator(indicatorValue = indicatorValue.toString())
@@ -90,8 +98,13 @@ fun CustomSlider(
                         label = label
                     )
 
+                val myColor = if (enabled) {
+                    color
+                } else {
+                    disabledColor
+                }
                 Box(modifier = Modifier.layoutId(CustomSliderComponents.THUMB)) {
-                    thumb(value.roundToInt())
+                    thumb(value.roundToInt(), myColor)
                 }
 
                 Slider(
@@ -103,9 +116,11 @@ fun CustomSlider(
                     steps = steps,
                     onValueChange = { onValueChange(it) },
                     thumb = {
-                        thumb(value.roundToInt())
+                        thumb(
+                            value.roundToInt(), myColor
+                        )
                     },
-                    track = { track(it) },
+                    track = { track(it, myColor) },
                     enabled = enabled
                 )
 
