@@ -131,12 +131,7 @@ fun BubbleSortItem(
     }
     val itemHeight = (item.value * totalHeight.value / 100) - 40
     Column(
-        modifier = modifier/*.shadow(
-            elevation = 7.dp,
-            spotColor = Color.Black,
-            ambientColor = Color.Black,
-            shape = RoundedCornerShape(15.dp),
-        ),*/,
+        modifier = modifier,
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

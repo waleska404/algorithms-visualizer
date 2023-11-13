@@ -21,9 +21,9 @@ class BubbleSortImpl @Inject constructor() : BubbleSort {
                 // check if the two elements should swap
                 if (currentItem > nextItem) {
                     list.swap(innerIndex, innerIndex + 1)
-                    emit(BubbleSortInfo(currentItem = innerIndex, shouldSwap = true, hadNoEffect = false))
+                    emit(BubbleSortInfo(currentItem = innerIndex, shouldSwap = true))
                 } else {
-                    emit(BubbleSortInfo(currentItem = innerIndex, shouldSwap = false, hadNoEffect = true))
+                    emit(BubbleSortInfo(currentItem = innerIndex, shouldSwap = false))
                 }
                 delay(500)
                 innerIndex += 1

@@ -1,4 +1,4 @@
-package com.waleska404.algorithms.domain
+package com.waleska404.algorithms.domain.bubblesort
 
 import com.waleska404.algorithms.domain.algoimlpementation.BubbleSortImpl
 import com.waleska404.algorithms.domain.utils.ListSortTestCases
