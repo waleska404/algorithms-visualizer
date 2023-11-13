@@ -32,10 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -134,12 +131,12 @@ fun BubbleSortItem(
     }
     val itemHeight = (item.value * totalHeight.value / 100) - 40
     Column(
-        modifier = modifier.shadow(
+        modifier = modifier/*.shadow(
             elevation = 7.dp,
             spotColor = Color.Black,
             ambientColor = Color.Black,
             shape = RoundedCornerShape(15.dp),
-        ),
+        ),*/,
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -147,29 +144,28 @@ fun BubbleSortItem(
             modifier = Modifier
                 .height(itemHeight.dp)
                 .width(30.dp)
-                .background(item.color, RoundedCornerShape(15.dp))
+                .background(MaterialTheme.colorScheme.onSecondary, RoundedCornerShape(15.dp))
                 .border(borderStroke, RoundedCornerShape(15.dp))
         )
         Box(
             modifier = Modifier
                 .width(40.dp)
                 .height(30.dp),
-            //.shadow(elevation = 5.dp, spotColor = Color.White, ambientColor = Color.White,),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                //modifier = Modifier.shadow(elevation = 5.dp, spotColor = Color.White, ambientColor = Color.White),
                 text = "${item.value}",
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp,
                 color = MaterialTheme.colorScheme.secondary,
+                /*
                 style = MaterialTheme.typography.titleSmall.copy(
                     shadow = Shadow(
                         color = Color.Black,
                         offset = Offset(5f, 5f),
                         blurRadius = 8f
                     )
-                )
+                )*/
             )
         }
     }
@@ -239,7 +235,8 @@ fun BottomButtons(
                 iconResource = R.drawable.sort,
                 iconDescriptionResource = R.string.sort_icon,
                 iconTint = MaterialTheme.colorScheme.primary,
-                enabled = !isSorting
+                enabled = !isSorting,
+                containerColor = MaterialTheme.colorScheme.onSecondary
             )
         }
     }

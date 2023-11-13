@@ -3,7 +3,6 @@ package com.waleska404.algorithms.ui.bubblesort
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.algointerface.BubbleSort
-import com.waleska404.algorithms.ui.theme.SecondaryPurpleLight
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +28,6 @@ class BubbleSortViewModel @Inject constructor(
                 id = it,
                 isCurrentlyCompared = false,
                 value = (30..100).random(),
-                color = SecondaryPurpleLight
             )
         }
         return BubbleSortList(list = list)

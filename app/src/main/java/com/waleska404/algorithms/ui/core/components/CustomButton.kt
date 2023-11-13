@@ -29,6 +29,7 @@ fun CustomIconButton(
     iconResource: Int,
     iconDescriptionResource: Int,
     iconTint: Color,
+    containerColor: Color = MaterialTheme.colorScheme.secondary
 ) {
     Button(
         modifier = modifier
@@ -36,7 +37,7 @@ fun CustomIconButton(
         onClick = { onClick() },
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.secondary,
+            containerColor = containerColor,
             contentColor = MaterialTheme.colorScheme.primary,
             disabledContainerColor = MaterialTheme.colorScheme.surface,
             disabledContentColor = MaterialTheme.colorScheme.primary,

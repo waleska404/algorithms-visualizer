@@ -3,13 +3,22 @@ package com.waleska404.algorithms.ui.theme
 import androidx.compose.ui.graphics.Color
 
 // dark theme colors
-val MainPurple = Color(0xFF2B2544)
-val SecondaryPurpleStrong = Color(0xFFC8C2E4)
-val SecondaryPurpleLight = Color(0xFF8475C4)
-val DisabledPurple = Color(0xFF423C58)
-val AccentGreen = Color(0xFF00FF00)
+val MainColorDark = Color(0xFF171F2B)
+//val SecondaryMainColor = Color(0x83171F2B)
+val ContrastColorDark = Color(0xFFC2CCE4)
+val SecondaryContrastColorDark = Color(0xFF92D5DB)
+val AccentContentDark = Color(0xC4999BFF)
+val DisabledColorDark = Color(0xFF3C4C58)
 
 // light theme colors
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val MainColorLight = Color(0xFFC2CCE4)
+//val SecondaryMainColor = Color(0x83171F2B)
+val ContrastColorLight = Color(0xFF171F2B)
+val SecondaryContrastColorLight = Color(0xFF1D292B)
+val AccentContentLight = Color(0xB94649FC)
+val DisabledColorLight = Color(0xFF8A93A7)
+
+
+// sharedr
+val AccentGreen = Color(0xFF00FF00)
+
