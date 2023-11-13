@@ -218,7 +218,6 @@ fun BottomButtons(
                 onClick = { randomList() },
                 iconResource = R.drawable.shuffle,
                 iconDescriptionResource = R.string.sort_icon,
-                iconTint = MaterialTheme.colorScheme.primary,
                 enabled = !isSorting
             )
             Spacer(modifier = Modifier.width(20.dp))
@@ -229,7 +228,6 @@ fun BottomButtons(
                 onClick = { startSorting() },
                 iconResource = R.drawable.sort,
                 iconDescriptionResource = R.string.sort_icon,
-                iconTint = MaterialTheme.colorScheme.primary,
                 enabled = !isSorting,
                 containerColor = MaterialTheme.colorScheme.onSecondary
             )

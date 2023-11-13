@@ -19,6 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.waleska404.algorithms.R
+import com.waleska404.algorithms.ui.core.LightAndDarkPreviews
+import com.waleska404.algorithms.ui.theme.AlgorithmsTheme
 
 @Composable
 fun CustomIconButton(
@@ -28,8 +31,11 @@ fun CustomIconButton(
     enabled: Boolean = true,
     iconResource: Int,
     iconDescriptionResource: Int,
-    iconTint: Color,
-    containerColor: Color = MaterialTheme.colorScheme.secondary
+    iconTint: Color = MaterialTheme.colorScheme.primary,
+    containerColor: Color = MaterialTheme.colorScheme.secondary,
+    contentColor: Color = MaterialTheme.colorScheme.primary,
+    disabledContainerColor: Color = MaterialTheme.colorScheme.surface,
+    disabledContentColor: Color = MaterialTheme.colorScheme.primary
 ) {
     Button(
         modifier = modifier
@@ -38,9 +44,9 @@ fun CustomIconButton(
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
-            contentColor = MaterialTheme.colorScheme.primary,
-            disabledContainerColor = MaterialTheme.colorScheme.surface,
-            disabledContentColor = MaterialTheme.colorScheme.primary,
+            contentColor = contentColor,
+            disabledContainerColor = disabledContainerColor,
+            disabledContentColor = disabledContentColor,
         )
     ) {
         Row(
@@ -64,5 +70,20 @@ fun CustomIconButton(
             )
         }
 
+    }
+}
+
+@LightAndDarkPreviews
+@Composable
+fun CustomIconButtonPreview() {
+    AlgorithmsTheme {
+        CustomIconButton(
+            modifier = Modifier,
+            text = "Sort",
+            onClick = { },
+            iconResource = R.drawable.sort,
+            iconDescriptionResource = R.string.sort_icon,
+            enabled = true,
+        )
     }
 }

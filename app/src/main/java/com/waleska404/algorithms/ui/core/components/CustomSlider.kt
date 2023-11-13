@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderPositions
 import androidx.compose.material3.Text
@@ -28,6 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.waleska404.algorithms.ui.core.LightAndDarkPreviews
+import com.waleska404.algorithms.ui.theme.AlgorithmsTheme
 import kotlin.math.roundToInt
 
 /**
@@ -400,3 +403,21 @@ private const val Gap = 1
 private val ValueRange = 0f..10f
 private val TrackHeight = 8.dp
 private val ThumbSize = 30.dp
+
+@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.O)
+@LightAndDarkPreviews
+@Composable
+fun CustomSliderPreview() {
+    AlgorithmsTheme {
+        CustomSlider(
+            value = 8f,
+            valueRange = 1f..30f,
+            enabled = true,
+            onValueChange = {},
+            color = MaterialTheme.colorScheme.secondary,
+            disabledColor = MaterialTheme.colorScheme.surface,
+            textThumbColor = MaterialTheme.colorScheme.primary
+        )
+    }
+}
