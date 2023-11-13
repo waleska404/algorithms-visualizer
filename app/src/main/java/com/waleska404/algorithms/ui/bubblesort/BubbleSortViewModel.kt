@@ -1,10 +1,11 @@
 package com.waleska404.algorithms.ui.bubblesort
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.algointerface.BubbleSort
+import com.waleska404.algorithms.ui.theme.SecondaryPurpleLight
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -28,7 +29,7 @@ class BubbleSortViewModel @Inject constructor(
                 id = it,
                 isCurrentlyCompared = false,
                 value = (30..100).random(),
-                color = Color.Red
+                color = SecondaryPurpleLight
             )
         }
         return BubbleSortList(list = list)
@@ -50,23 +51,23 @@ class BubbleSortViewModel @Inject constructor(
                 newListCompare[index] = newListCompare[index].copy(isCurrentlyCompared = true)
                 newListCompare[index + 1] = newListCompare[index + 1].copy(isCurrentlyCompared = true)
                 _listToSort.value = _listToSort.value.copy(list = newListCompare)
+                delay(500)
 
                 // swap if necessary
                 if (bubbleSortInfo.shouldSwap) {
                     val newListSwap = _listToSort.value.list.toMutableList()
-                    val temp = newListSwap[index].copy(isCurrentlyCompared = false)
-                    newListSwap[index] = newListSwap[index + 1].copy(isCurrentlyCompared = false)
+                    val temp = newListSwap[index].copy()
+                    newListSwap[index] = newListSwap[index + 1].copy()
                     newListSwap[index + 1] = temp
                     _listToSort.value = _listToSort.value.copy(list = newListSwap)
                 }
 
-                // there is no changes in the list
-                if (bubbleSortInfo.hadNoEffect) {
-                    val newListEffect = _listToSort.value.list.toMutableList()
-                    newListEffect[index] = newListEffect[index].copy(isCurrentlyCompared = false)
-                    newListEffect[index + 1] = newListEffect[index + 1].copy(isCurrentlyCompared = false)
-                    _listToSort.value = _listToSort.value.copy(list = newListEffect)
-                }
+                delay(500)
+                // uncheck as being compared
+                val newListEffect = _listToSort.value.list.toMutableList()
+                newListEffect[index] = newListEffect[index].copy(isCurrentlyCompared = false)
+                newListEffect[index + 1] = newListEffect[index + 1].copy(isCurrentlyCompared = false)
+                _listToSort.value = _listToSort.value.copy(list = newListEffect)
             }
             _isSorting.value = false
         }

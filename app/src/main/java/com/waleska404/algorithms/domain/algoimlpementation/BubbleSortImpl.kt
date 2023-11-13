@@ -17,8 +17,6 @@ class BubbleSortImpl @Inject constructor() : BubbleSort {
                 // select the two elements to compare
                 val currentItem = list[innerIndex]
                 val nextItem = list[innerIndex + 1]
-                emit(BubbleSortInfo(currentItem = innerIndex, shouldSwap = false, hadNoEffect = false))
-                delay(500)
 
                 // check if the two elements should swap
                 if (currentItem > nextItem) {

@@ -62,16 +62,19 @@ fun CustomSlider(
     enabled: Boolean = true,
     color: Color,
     disabledColor: Color,
-    thumb: @Composable (thumbValue: Int, color: Color) -> Unit = { thumbValue, thumbCustomColor ->
+    textThumbColor: Color,
+    thumb: @Composable (thumbValue: Int, color: Color, textColor: Color) -> Unit = { thumbValue, thumbCustomColor, textCustomColor ->
         CustomSliderDefaults.Thumb(
             thumbValue = thumbValue.toString(),
-            color = thumbCustomColor
+            color = thumbCustomColor,
+            textColor = textCustomColor,
         )
     },
-    track: @Composable (sliderPositions: SliderPositions, color: Color) -> Unit = { sliderPositions, trackCustomColor ->
+    track: @Composable (sliderPositions: SliderPositions, progressColor: Color, trackColor: Color) -> Unit = { sliderPositions, progressCustomColor, trackCustomColor->
         CustomSliderDefaults.Track(
             sliderPositions = sliderPositions,
-            progressColor = trackCustomColor
+            progressColor = progressCustomColor,
+            trackColor = trackCustomColor
         )
     },
     indicator: @Composable (indicatorValue: Int) -> Unit = { indicatorValue ->
@@ -106,7 +109,7 @@ fun CustomSlider(
                     disabledColor
                 }
                 Box(modifier = Modifier.layoutId(CustomSliderComponents.THUMB)) {
-                    thumb(value.roundToInt(), myColor)
+                    thumb(value.roundToInt(), myColor, textThumbColor)
                 }
 
                 Slider(
@@ -119,10 +122,10 @@ fun CustomSlider(
                     onValueChange = { onValueChange(it) },
                     thumb = {
                         thumb(
-                            value.roundToInt(), myColor
+                            value.roundToInt(), myColor, textThumbColor
                         )
                     },
-                    track = { track(it, myColor) },
+                    track = { track(it, myColor, disabledColor) },
                     enabled = enabled
                 )
 
@@ -259,13 +262,14 @@ object CustomSliderDefaults {
     fun Thumb(
         thumbValue: String,
         modifier: Modifier = Modifier,
-        color: Color = PrimaryColor,
+        color: Color,
+        textColor: Color,
         size: Dp = ThumbSize,
         shape: Shape = CircleShape,
         content: @Composable () -> Unit = {
             Text(
                 text = thumbValue,
-                color = Color.White,
+                color = textColor,
                 textAlign = TextAlign.Center
             )
         }
