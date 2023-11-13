@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 // dark theme colors
 val MainColorDark = Color(0xFF171F2B)
-//val SecondaryMainColor = Color(0x83171F2B)
+val LightContrastColorDark = Color(0xFF232D3C)
 val ContrastColorDark = Color(0xFFC2CCE4)
 val SecondaryContrastColorDark = Color(0xFF92D5DB)
 val AccentContentDark = Color(0xC4999BFF)
@@ -12,7 +12,7 @@ val DisabledColorDark = Color(0xFF3C4C58)
 
 // light theme colors
 val MainColorLight = Color(0xFFC2CCE4)
-//val SecondaryMainColor = Color(0x83171F2B)
+val LightContrastColorLight = Color(0xFFE2EAFC)
 val ContrastColorLight = Color(0xFF171F2B)
 val SecondaryContrastColorLight = Color(0xFF1D292B)
 val AccentContentLight = Color(0xB94649FC)

@@ -5,4 +5,5 @@
     <string name="list_size">List Size:</string>
     <string name="random">Random</string>
     <string name="sort">Sort</string>
+    <string name="sort_descending_icon">sort descending icon</string>
 </resources>
