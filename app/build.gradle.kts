@@ -80,4 +80,9 @@ dependencies {
     //Navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.5")
+
+    //Test
+    testImplementation("io.mockk:mockk:1.13.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
 }
