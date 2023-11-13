@@ -1,5 +1,6 @@
 package com.waleska404.algorithms.ui.core.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.waleska404.algorithms.R
+import com.waleska404.algorithms.ui.core.LightAndDarkPreviews
+import com.waleska404.algorithms.ui.theme.AlgorithmsTheme
 
 @Composable
 fun CustomCard(
@@ -36,12 +40,14 @@ fun CustomCard(
     text: String,
     iconResource: Int,
     iconDescriptionResource: Int,
-    iconTint: Color = MaterialTheme.colorScheme.secondary
+    iconTint: Color = MaterialTheme.colorScheme.secondary,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(50.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
@@ -51,7 +57,9 @@ fun CustomCard(
         )
     ) {
             Row(
-                modifier = Modifier.fillMaxSize().padding(12.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
@@ -76,6 +84,18 @@ fun CustomCard(
                     fontWeight = FontWeight.Bold
                 )
             }
+    }
+}
 
+@LightAndDarkPreviews
+@Composable
+fun CustomCardPreview() {
+    AlgorithmsTheme {
+        CustomCard(
+            text = "Custom Card",
+            iconResource = R.drawable.sortdescending,
+            iconDescriptionResource = R.string.sort_descending_icon,
+            onClick = {}
+        )
     }
 }

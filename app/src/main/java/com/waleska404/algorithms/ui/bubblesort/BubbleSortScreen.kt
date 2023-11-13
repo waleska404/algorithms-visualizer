@@ -49,6 +49,7 @@ import com.waleska404.algorithms.ui.core.components.CustomSlider
 @Composable
 fun BubbleSortScreen(
     sortViewModel: BubbleSortViewModel = hiltViewModel(),
+    navigateToHome: () -> Boolean,
 ) {
 
     val listToSort: BubbleSortList by sortViewModel.listToSort.collectAsState()

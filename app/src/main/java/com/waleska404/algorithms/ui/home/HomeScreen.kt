@@ -14,7 +14,9 @@ import com.waleska404.algorithms.R
 import com.waleska404.algorithms.ui.core.components.CustomCard
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navigateToBubbleSort: () -> Unit
+) {
      Column(
          modifier = Modifier
              .fillMaxSize()
@@ -22,16 +24,17 @@ fun HomeScreen() {
              .verticalScroll(state = rememberScrollState()),
      ) {
          Spacer(modifier = Modifier.height(15.dp))
-         BubbleSort()
+         BubbleSort(navigateToBubbleSort = navigateToBubbleSort)
      }
 }
 
 @Composable
-fun BubbleSort() {
+fun BubbleSort(navigateToBubbleSort: () -> Unit) {
     CustomCard(
         text = "Bubble Sort",
         iconResource = R.drawable.sortdescending,
         iconDescriptionResource = R.string.sort_descending_icon,
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp),
+        onClick = { navigateToBubbleSort()}
     )
 }
