@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.waleska404.algorithms.ui.bubblesort.BubbleSortScreen
 import com.waleska404.algorithms.ui.home.HomeScreen
+import com.waleska404.algorithms.ui.quicksort.QuickSortScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -22,6 +23,11 @@ fun ContentWrapper(navigationController: NavHostController) {
                     navigationController.navigate(
                         Routes.BubbleSort.route
                     )
+                },
+                navigateToQuickSort = {
+                    navigationController.navigate(
+                        Routes.QuickSort.route
+                    )
                 }
             )
 
@@ -33,10 +39,18 @@ fun ContentWrapper(navigationController: NavHostController) {
                 }
             )
         }
+        composable(route = Routes.QuickSort.route) {
+            QuickSortScreen(
+                navigateToHome = {
+                    navigationController.popBackStack()
+                }
+            )
+        }
     }
 }
 
 sealed class Routes(val route: String) {
     object Home : Routes("home")
     object BubbleSort : Routes("bubble_sort")
+    object QuickSort : Routes("quick_sort")
 }

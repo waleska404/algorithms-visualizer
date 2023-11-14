@@ -1,7 +1,6 @@
-package com.waleska404.algorithms.domain.algoimlpementation
+package com.waleska404.algorithms.domain.quicksort
 
-import com.waleska404.algorithms.domain.algointerface.QuickSort
-import com.waleska404.algorithms.domain.model.QuickSortInfo
+import android.util.Log
 import com.waleska404.algorithms.domain.utils.swap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -13,6 +12,7 @@ class QuickSortImpl @Inject constructor() : QuickSort {
 
     override fun runQuickSort(list: MutableList<Int>, start: Int, end: Int): Flow<QuickSortInfo> = flow {
         if (start < end) {
+            Log.i("QuickSort", "RUNQUICKSORT -> start: $start, end: $end")
             val pivot = start
             var l = start + 1
             var r = end
@@ -23,8 +23,6 @@ class QuickSortImpl @Inject constructor() : QuickSort {
                     list.swap(l, r)
                     shouldSwap = true
                 }
-                if (list[l] <= list[pivot]) l++
-                if (list[r] >= list[pivot]) r--
                 emit(
                     QuickSortInfo(
                         currentPivot = pivot,
@@ -36,6 +34,8 @@ class QuickSortImpl @Inject constructor() : QuickSort {
                     )
                 )
                 delay(500)
+                if (list[l] <= list[pivot]) l++
+                if (list[r] >= list[pivot]) r--
             }
             list.swap(pivot, r)
             emit(
@@ -48,13 +48,22 @@ class QuickSortImpl @Inject constructor() : QuickSort {
                     sortingSubarray = Pair(start, end),
                 )
             )
+            delay(500)
             val leftSubArrayIsSmaller = r - 1 - start < end - (r + 1)
             if (leftSubArrayIsSmaller) {
-                runQuickSort(list, start, r - 1)
-                runQuickSort(list, r + 1, end)
+                runQuickSort(list, start, r - 1).collect { info ->
+                    emit(info)
+                }
+                runQuickSort(list, r + 1, end).collect { info ->
+                    emit(info)
+                }
             } else {
-                runQuickSort(list, r + 1, end)
-                runQuickSort(list, start, r - 1)
+                runQuickSort(list, r + 1, end).collect { info ->
+                    emit(info)
+                }
+                runQuickSort(list, start, r - 1).collect { info ->
+                    emit(info)
+                }
             }
         }
     }

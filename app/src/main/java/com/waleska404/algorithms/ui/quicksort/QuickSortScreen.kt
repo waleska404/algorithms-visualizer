@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -62,7 +63,7 @@ fun QuickSortScreen(
             .background(MaterialTheme.colorScheme.primary),
     ) {
         Text(
-            text = stringResource(id = R.string.bubble_sort_title),
+            text = stringResource(id = R.string.quick_sort_title),
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             color = MaterialTheme.colorScheme.secondary
@@ -70,7 +71,8 @@ fun QuickSortScreen(
         Spacer(modifier = Modifier.height(10.dp))
         SortingList(
             modifier = Modifier.weight(0.7f),
-            listToSort = listToSort.list
+            listToSort = listToSort.list,
+            isSorting = isSorting
         )
         Spacer(modifier = Modifier.height(10.dp))
         BottomButtons(
@@ -87,7 +89,8 @@ fun QuickSortScreen(
 @Composable
 private fun SortingList(
     listToSort: List<QuickSortItem>,
-    modifier: Modifier
+    modifier: Modifier,
+    isSorting: Boolean
 ) {
     val localDensity = LocalDensity.current
     var heightIs by remember {
@@ -113,7 +116,8 @@ private fun SortingList(
                 modifier = Modifier.animateItemPlacement(
                     tween(300)
                 ),
-                totalHeight = heightIs
+                totalHeight = heightIs,
+                isSorting = isSorting
             )
         }
     }
@@ -123,10 +127,11 @@ private fun SortingList(
 fun QuickSortItem(
     item: QuickSortItem,
     modifier: Modifier = Modifier,
-    totalHeight: Dp
+    totalHeight: Dp,
+    isSorting: Boolean
 ) {
     val hasStroke = item.isPivot || item.isLeftPointer || item.isRightPointer
-    val colorStroke = if(item.isPivot) {
+    val colorStroke = if (item.isPivot) {
         MaterialTheme.colorScheme.outlineVariant
     } else {
         MaterialTheme.colorScheme.outline
@@ -137,16 +142,49 @@ fun QuickSortItem(
         BorderStroke(width = 0.dp, Color.Transparent)
     }
     val itemHeight = (item.value * totalHeight.value / 100) - 40
+    val itemColor = if (!isSorting) {
+        MaterialTheme.colorScheme.onSecondary
+    } else {
+        if (item.alreadyOrdered) {
+            Color.Black
+        } else {
+            MaterialTheme.colorScheme.onSecondary
+        }
+    }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if(item.isLeftPointer) {
+            Box(modifier = Modifier.size(40.dp).background(Color.Green)) {
+                Text(
+                    text = "L",
+                    color = Color.Black
+                )
+            }
+        }
+        if(item.isRightPointer) {
+            Box(modifier = Modifier.size(40.dp).background(Color.Green)) {
+                Text(
+                    text = "R",
+                    color = Color.Black
+                )
+            }
+        }
+        if(item.isPivot) {
+            Box(modifier = Modifier.size(40.dp).background(Color.Red)) {
+                Text(
+                    text = "P",
+                    color = Color.Black
+                )
+            }
+        }
         Box(
             modifier = Modifier
                 .height(itemHeight.dp)
                 .width(30.dp)
-                .background(MaterialTheme.colorScheme.onSecondary, RoundedCornerShape(15.dp))
+                .background(itemColor, RoundedCornerShape(15.dp))
                 .border(borderStroke, RoundedCornerShape(15.dp))
         )
         Box(
@@ -160,14 +198,6 @@ fun QuickSortItem(
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp,
                 color = MaterialTheme.colorScheme.secondary,
-                /*
-                style = MaterialTheme.typography.titleSmall.copy(
-                    shadow = Shadow(
-                        color = Color.Black,
-                        offset = Offset(5f, 5f),
-                        blurRadius = 8f
-                    )
-                )*/
             )
         }
     }

@@ -1,7 +1,9 @@
 package com.waleska404.algorithms.di
 
-import com.waleska404.algorithms.domain.algoimlpementation.BubbleSortImpl
-import com.waleska404.algorithms.domain.algointerface.BubbleSort
+import com.waleska404.algorithms.domain.bubblesort.BubbleSortImpl
+import com.waleska404.algorithms.domain.quicksort.QuickSortImpl
+import com.waleska404.algorithms.domain.bubblesort.BubbleSort
+import com.waleska404.algorithms.domain.quicksort.QuickSort
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +17,9 @@ class DataModule {
     @Singleton
     @Provides
     fun providesBubbleSort(): BubbleSort = BubbleSortImpl()
+
+    @Singleton
+    @Provides
+    fun providesQuickSort(): QuickSort = QuickSortImpl()
 
 }
