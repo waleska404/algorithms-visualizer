@@ -2,6 +2,7 @@ package com.waleska404.algorithms.domain.algoimlpementation
 
 import com.waleska404.algorithms.domain.algointerface.BubbleSort
 import com.waleska404.algorithms.domain.model.BubbleSortInfo
+import com.waleska404.algorithms.domain.utils.swap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,11 +32,4 @@ class BubbleSortImpl @Inject constructor() : BubbleSort {
             size -= 1
         }
     }
-
-}
-
-private fun <E> MutableList<E>.swap(i: Int, j: Int) {
-    val temp = this[i]
-    this[i] = this[j]
-    this[j] = temp
 }
