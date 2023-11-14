@@ -72,7 +72,6 @@ fun QuickSortScreen(
         SortingList(
             modifier = Modifier.weight(0.7f),
             listToSort = listToSort.list,
-            isSorting = isSorting
         )
         Spacer(modifier = Modifier.height(10.dp))
         BottomButtons(
@@ -90,7 +89,6 @@ fun QuickSortScreen(
 private fun SortingList(
     listToSort: List<QuickSortItem>,
     modifier: Modifier,
-    isSorting: Boolean
 ) {
     val localDensity = LocalDensity.current
     var heightIs by remember {
@@ -117,7 +115,6 @@ private fun SortingList(
                     tween(300)
                 ),
                 totalHeight = heightIs,
-                isSorting = isSorting
             )
         }
     }
@@ -128,7 +125,6 @@ fun QuickSortItem(
     item: QuickSortItem,
     modifier: Modifier = Modifier,
     totalHeight: Dp,
-    isSorting: Boolean
 ) {
     val hasStroke = item.isPivot || item.isLeftPointer || item.isRightPointer
     val colorStroke = if (item.isPivot) {
@@ -142,38 +138,40 @@ fun QuickSortItem(
         BorderStroke(width = 0.dp, Color.Transparent)
     }
     val itemHeight = (item.value * totalHeight.value / 100) - 40
-    val itemColor = if (!isSorting) {
-        MaterialTheme.colorScheme.onSecondary
+    val itemColor = if (item.alreadyOrdered) {
+        Color.Black
     } else {
-        if (item.alreadyOrdered) {
-            Color.Black
-        } else {
-            MaterialTheme.colorScheme.onSecondary
-        }
+        MaterialTheme.colorScheme.onSecondary
     }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if(item.isLeftPointer) {
-            Box(modifier = Modifier.size(40.dp).background(Color.Green)) {
+        if (item.isLeftPointer) {
+            Box(modifier = Modifier
+                .size(40.dp)
+                .background(Color.Green)) {
                 Text(
                     text = "L",
                     color = Color.Black
                 )
             }
         }
-        if(item.isRightPointer) {
-            Box(modifier = Modifier.size(40.dp).background(Color.Green)) {
+        if (item.isRightPointer) {
+            Box(modifier = Modifier
+                .size(40.dp)
+                .background(Color.Green)) {
                 Text(
                     text = "R",
                     color = Color.Black
                 )
             }
         }
-        if(item.isPivot) {
-            Box(modifier = Modifier.size(40.dp).background(Color.Red)) {
+        if (item.isPivot) {
+            Box(modifier = Modifier
+                .size(40.dp)
+                .background(Color.Red)) {
                 Text(
                     text = "P",
                     color = Color.Black

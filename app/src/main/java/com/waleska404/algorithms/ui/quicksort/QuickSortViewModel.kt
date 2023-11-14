@@ -131,22 +131,18 @@ class QuickSortViewModel @Inject constructor(
                 delay(2000)
 
                 if (quickSortInfo.shouldSwapPointers) {
-                    val newListSwap = _listToSort.value.list.toMutableList()
-                    val temp = newListSwap[leftPointer].copy()
-                    newListSwap[leftPointer] = newListSwap[rightPointer].copy()
-                    newListSwap[rightPointer] = temp
-                    _listToSort.value = _listToSort.value.copy(list = newListSwap)
+                    swapOnCurrentList(leftPointer, rightPointer)
                 }
-
                 if (quickSortInfo.shouldSwapPivot) {
-                    val newListSwap = _listToSort.value.list.toMutableList()
-                    val temp = newListSwap[pivot].copy(alreadyOrdered = true, isPivot = false)
-                    newListSwap[pivot] = newListSwap[rightPointer].copy()
-                    newListSwap[rightPointer] = temp
-                    _listToSort.value = _listToSort.value.copy(list = newListSwap)
+                    swapOnCurrentList(pivot, rightPointer)
+                    delay(2000)
+                    val newListAfterSwap = _listToSort.value.list.toMutableList()
+                    newListAfterSwap[pivot] = newListAfterSwap[pivot].copy(isRightPointer = false)
+                    newListAfterSwap[rightPointer] = newListAfterSwap[rightPointer].copy(alreadyOrdered = true, isPivot = false)
+                    _listToSort.value = _listToSort.value.copy(list = newListAfterSwap)
                 }
 
-                delay(2000)
+                delay(500)
                 // uncheck as being compared
                 val newList = _listToSort.value.list.toMutableList()
                 newList[leftPointer] = newList[leftPointer].copy(isLeftPointer = false, isRightPointer = false)
@@ -154,7 +150,29 @@ class QuickSortViewModel @Inject constructor(
                 _listToSort.value = _listToSort.value.copy(list = newList)
             }
             _isSorting.value = false
+            resetColors()
         }
+    }
+
+    private fun resetColors() {
+        val newList = mutableListOf<QuickSortItem>()
+        for(i in _listToSort.value.list) {
+            newList.add(i.copy(
+                isPivot = false,
+                isLeftPointer = false,
+                isRightPointer = false,
+                alreadyOrdered = false
+            ))
+        }
+        _listToSort.value = _listToSort.value.copy(list = newList)
+    }
+
+    private fun swapOnCurrentList(i: Int, j: Int) {
+        val newListSwap = _listToSort.value.list.toMutableList()
+        val temp = newListSwap[i].copy()
+        newListSwap[i] = newListSwap[j].copy()
+        newListSwap[j] = temp
+        _listToSort.value = _listToSort.value.copy(list = newListSwap)
     }
 
 }
