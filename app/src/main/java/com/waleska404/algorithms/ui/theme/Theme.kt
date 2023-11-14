@@ -19,7 +19,8 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = SecondaryContrastColorDark,
     background = MainColorDark,
     surface = DisabledColorDark,
-    outline = AccentGreen
+    outline = AccentGreen,
+    outlineVariant = AccentRed
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -30,7 +31,8 @@ private val LightColorScheme = lightColorScheme(
     tertiary = SecondaryContrastColorLight,
     background = MainColorLight,
     surface = DisabledColorLight,
-    outline = AccentGreen
+    outline = AccentGreen,
+    outlineVariant = AccentRed
 
     /* Other default colors to override
     surface = Color(0xFFFFFBFE),
