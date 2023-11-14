@@ -1,6 +1,5 @@
-package com.waleska404.algorithms.domain.algointerface
+package com.waleska404.algorithms.domain.quicksort
 
-import com.waleska404.algorithms.domain.model.QuickSortInfo
 import kotlinx.coroutines.flow.Flow
 
 interface QuickSort {

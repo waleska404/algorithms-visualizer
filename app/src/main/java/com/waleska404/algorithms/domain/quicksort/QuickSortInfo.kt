@@ -1,4 +1,4 @@
-package com.waleska404.algorithms.domain.model
+package com.waleska404.algorithms.domain.quicksort
 
 class QuickSortInfo(
     val currentPivot: Int,

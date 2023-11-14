@@ -1,4 +1,4 @@
-package com.waleska404.algorithms.ui.theme
+package com.waleska404.algorithms.ui.core.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -1,7 +1,5 @@
-package com.waleska404.algorithms.domain.algoimlpementation
+package com.waleska404.algorithms.domain.bubblesort
 
-import com.waleska404.algorithms.domain.algointerface.BubbleSort
-import com.waleska404.algorithms.domain.model.BubbleSortInfo
 import com.waleska404.algorithms.domain.utils.swap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

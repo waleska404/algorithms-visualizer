@@ -1,4 +1,4 @@
-package com.waleska404.algorithms.domain.model
+package com.waleska404.algorithms.domain.bubblesort
 
 data class BubbleSortInfo(
     val currentItem: Int,
