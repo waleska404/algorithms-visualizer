@@ -1,7 +1,7 @@
 package com.waleska404.algorithms.ui.bubblesort
 
-import com.waleska404.algorithms.domain.algointerface.BubbleSort
-import com.waleska404.algorithms.domain.model.BubbleSortInfo
+import com.waleska404.algorithms.domain.bubblesort.BubbleSort
+import com.waleska404.algorithms.domain.bubblesort.BubbleSortInfo
 import com.waleska404.algorithms.testrules.CoroutinesTestRule
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

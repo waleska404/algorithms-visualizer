@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.waleska404.algorithms.ui.core.ContentWrapper
-import com.waleska404.algorithms.ui.theme.AlgorithmsTheme
+import com.waleska404.algorithms.ui.core.theme.AlgorithmsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

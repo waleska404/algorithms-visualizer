@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.waleska404.algorithms.R
 import com.waleska404.algorithms.ui.core.LightAndDarkPreviews
-import com.waleska404.algorithms.ui.theme.AlgorithmsTheme
+import com.waleska404.algorithms.ui.core.theme.AlgorithmsTheme
 
 @Composable
 fun CustomIconButton(

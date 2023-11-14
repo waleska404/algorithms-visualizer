@@ -1,6 +1,6 @@
 package com.waleska404.algorithms.domain.sort
 
-import com.waleska404.algorithms.domain.algoimlpementation.BubbleSortImpl
+import com.waleska404.algorithms.domain.bubblesort.BubbleSortImpl
 import com.waleska404.algorithms.domain.utils.ListSortTestCases
 import com.waleska404.algorithms.testrules.CoroutinesTestRule
 import kotlinx.coroutines.runBlocking
