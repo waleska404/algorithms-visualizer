@@ -51,7 +51,7 @@ fun BubbleSortScreen(
     sortViewModel: BubbleSortViewModel = hiltViewModel(),
     navigateToHome: () -> Boolean,
 ) {
-
+    //TODO: navigate to home icon
     val listToSort: BubbleSortList by sortViewModel.listToSort.collectAsState()
     val isSorting: Boolean by sortViewModel.isSorting.collectAsState()
 
@@ -75,8 +75,8 @@ fun BubbleSortScreen(
         Spacer(modifier = Modifier.height(10.dp))
         BottomButtons(
             startSorting = sortViewModel::startSorting,
-            randomList = sortViewModel::randomList,
-            sliderChange = sortViewModel::randomList,
+            randomList = sortViewModel::randomizeCurrentList,
+            sliderChange = sortViewModel::randomizeCurrentList,
             listSizeInit = listToSort.list.size,
             isSorting = isSorting
         )
@@ -85,7 +85,7 @@ fun BubbleSortScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SortingList(
+private fun SortingList(
     listToSort: List<BubbleSortItem>,
     modifier: Modifier
 ) {
@@ -120,7 +120,7 @@ fun SortingList(
 }
 
 @Composable
-fun BubbleSortItem(
+private fun BubbleSortItem(
     item: BubbleSortItem,
     modifier: Modifier = Modifier,
     totalHeight: Dp
@@ -172,7 +172,7 @@ fun BubbleSortItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomButtons(
+private fun BottomButtons(
     startSorting: () -> Unit,
     randomList: () -> Unit,
     sliderChange: (Int) -> Unit,

@@ -62,7 +62,7 @@ class BubbleSortViewModelTest {
         val oldList = viewModel.listToSort.value
         val oldSize = oldList.list.size
 
-        viewModel.randomList(oldSize + 2)
+        viewModel.randomizeCurrentList(oldSize + 2)
 
         val newList = viewModel.listToSort.value
         assertNotEquals(oldList, newList)
