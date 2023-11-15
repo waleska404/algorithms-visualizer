@@ -13,11 +13,11 @@ class BubbleSortImpl @Inject constructor() : BubbleSort {
         while (size > 0) {
             var innerIndex = 0
             while (innerIndex < size) {
-                // select the two elements to compare
+                // select two elements to compare
                 val currentItem = list[innerIndex]
                 val nextItem = list[innerIndex + 1]
 
-                // check if the two elements should swap
+                // check if the elements should swap
                 if (currentItem > nextItem) {
                     list.swap(innerIndex, innerIndex + 1)
                     emit(BubbleSortInfo(currentItem = innerIndex, shouldSwap = true))

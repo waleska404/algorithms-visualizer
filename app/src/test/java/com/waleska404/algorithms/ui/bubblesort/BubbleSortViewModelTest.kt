@@ -7,7 +7,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
@@ -77,27 +76,7 @@ class BubbleSortViewModelTest {
         assertTrue(viewModel.isSorting.value)
     }
 
-    @Test
-    fun `startSorting updates listToSort variable correctly`() = runTest {
-        // TODO
-        /*
-        viewModel.randomList(3)
-        val oldList = viewModel.listToSort.value.list.toMutableList()
-        println("MYTAG list1: $oldList")
-        // swap values on indexes 1 and 2
-        val temp = oldList[1]
-        oldList[1] = oldList[2]
-        oldList[2] = temp
-        println("MYTAG list2: $oldList")
-        viewModel.listToSort.test {
-            viewModel.startSorting()
-            delay(5000)
-            assertEquals(oldList, awaitItem().list.toMutableList())
-        }
-        val newList = viewModel.listToSort.value.list.toMutableList()
-        println("MYTAG list3: $newList")
-        */
-    }
+
 
 
 }

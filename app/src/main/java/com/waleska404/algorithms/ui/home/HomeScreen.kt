@@ -7,10 +7,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.waleska404.algorithms.R
 import com.waleska404.algorithms.ui.core.components.CustomCard
 
@@ -25,6 +30,18 @@ fun HomeScreen(
             .padding(horizontal = 15.dp)
             .verticalScroll(state = rememberScrollState()),
     ) {
+        Spacer(modifier = Modifier.height(15.dp))
+
+        // title
+        Text(
+            text = stringResource(id = R.string.home_screen_title),
+            fontWeight = FontWeight.Bold,
+            fontSize = 60.sp,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.padding(8.dp),
+            lineHeight = 60.sp,
+            textAlign = TextAlign.Center
+        )
         Spacer(modifier = Modifier.height(15.dp))
 
         // bubble sort

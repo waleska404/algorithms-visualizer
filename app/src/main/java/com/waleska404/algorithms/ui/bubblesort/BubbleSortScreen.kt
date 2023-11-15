@@ -51,7 +51,7 @@ fun BubbleSortScreen(
     sortViewModel: BubbleSortViewModel = hiltViewModel(),
     navigateToHome: () -> Boolean,
 ) {
-    //TODO: navigate to home icon
+    // TODO: navigate to home icon
     val listToSort: BubbleSortList by sortViewModel.listToSort.collectAsState()
     val isSorting: Boolean by sortViewModel.isSorting.collectAsState()
 
@@ -154,18 +154,9 @@ private fun BubbleSortItem(
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp,
                 color = MaterialTheme.colorScheme.secondary,
-                /*
-                style = MaterialTheme.typography.titleSmall.copy(
-                    shadow = Shadow(
-                        color = Color.Black,
-                        offset = Offset(5f, 5f),
-                        blurRadius = 8f
-                    )
-                )*/
             )
         }
     }
-
 }
 
 

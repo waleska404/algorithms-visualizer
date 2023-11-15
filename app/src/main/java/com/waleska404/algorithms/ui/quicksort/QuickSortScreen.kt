@@ -72,6 +72,7 @@ fun QuickSortScreen(
         SortingList(
             modifier = Modifier.weight(0.7f),
             listToSort = listToSort.list,
+            isSorting = isSorting,
         )
         Spacer(modifier = Modifier.height(10.dp))
         BottomButtons(
@@ -79,7 +80,7 @@ fun QuickSortScreen(
             randomList = sortViewModel::randomizeCurrentList,
             sliderChange = sortViewModel::randomizeCurrentList,
             listSizeInit = listToSort.list.size,
-            isSorting = isSorting
+            isSorting = isSorting,
         )
     }
 }
@@ -89,6 +90,7 @@ fun QuickSortScreen(
 private fun SortingList(
     listToSort: List<QuickSortItem>,
     modifier: Modifier,
+    isSorting: Boolean,
 ) {
     val localDensity = LocalDensity.current
     var heightIs by remember {
@@ -112,9 +114,10 @@ private fun SortingList(
             QuickSortItem(
                 item = it,
                 modifier = Modifier.animateItemPlacement(
-                    tween(300)
+                    animationSpec = tween()
                 ),
                 totalHeight = heightIs,
+                isSorting = isSorting
             )
         }
     }
@@ -125,6 +128,7 @@ fun QuickSortItem(
     item: QuickSortItem,
     modifier: Modifier = Modifier,
     totalHeight: Dp,
+    isSorting: Boolean,
 ) {
     val hasStroke = item.isPivot || item.isLeftPointer || item.isRightPointer
     val colorStroke = if (item.isPivot) {
@@ -137,9 +141,9 @@ fun QuickSortItem(
     } else {
         BorderStroke(width = 0.dp, Color.Transparent)
     }
-    val itemHeight = (item.value * totalHeight.value / 100) - 40
+    val itemHeight = (item.value * totalHeight.value / 100) - 40 - 5 - 30 - 30
     val itemColor = if (item.alreadyOrdered) {
-        Color.Black
+        MaterialTheme.colorScheme.surface
     } else {
         MaterialTheme.colorScheme.onSecondary
     }
@@ -148,36 +152,7 @@ fun QuickSortItem(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (item.isLeftPointer) {
-            Box(modifier = Modifier
-                .size(40.dp)
-                .background(Color.Green)) {
-                Text(
-                    text = "L",
-                    color = Color.Black
-                )
-            }
-        }
-        if (item.isRightPointer) {
-            Box(modifier = Modifier
-                .size(40.dp)
-                .background(Color.Green)) {
-                Text(
-                    text = "R",
-                    color = Color.Black
-                )
-            }
-        }
-        if (item.isPivot) {
-            Box(modifier = Modifier
-                .size(40.dp)
-                .background(Color.Red)) {
-                Text(
-                    text = "P",
-                    color = Color.Black
-                )
-            }
-        }
+        Pointers(isLeftPointer = item.isLeftPointer, isRightPointer = item.isRightPointer, isPivot = item.isPivot)
         Box(
             modifier = Modifier
                 .height(itemHeight.dp)
@@ -185,21 +160,85 @@ fun QuickSortItem(
                 .background(itemColor, RoundedCornerShape(15.dp))
                 .border(borderStroke, RoundedCornerShape(15.dp))
         )
-        Box(
-            modifier = Modifier
-                .width(40.dp)
-                .height(30.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "${item.value}",
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp,
-                color = MaterialTheme.colorScheme.secondary,
+        ItemTextValue(value = item.value)
+        if(item.inSortingRange && isSorting) {
+            Box(
+                modifier = Modifier
+                    .width(40.dp)
+                    .height(5.dp)
+                    .background(MaterialTheme.colorScheme.onSecondary),
             )
         }
     }
+}
 
+@Composable
+private fun ItemTextValue(
+    value: Int
+) {
+    Box(
+        modifier = Modifier
+            .width(40.dp)
+            .height(30.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "$value",
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+            color = MaterialTheme.colorScheme.secondary,
+        )
+    }
+}
+
+@Composable
+private fun Pointers(
+    isLeftPointer: Boolean,
+    isRightPointer: Boolean,
+    isPivot: Boolean,
+) {
+    if (isLeftPointer) {
+        Box(
+            modifier = Modifier
+                .size(30.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "L",
+                color = MaterialTheme.colorScheme.outline,
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp
+            )
+        }
+    }
+    if (isRightPointer) {
+        Box(
+            modifier = Modifier
+                .size(30.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "R",
+                color = MaterialTheme.colorScheme.outline,
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp
+            )
+        }
+    }
+    if (isPivot) {
+        Box(
+            modifier = Modifier
+                .size(30.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "P",
+                color = MaterialTheme.colorScheme.outlineVariant,
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -211,7 +250,7 @@ private fun BottomButtons(
     sliderChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
     listSizeInit: Int,
-    isSorting: Boolean
+    isSorting: Boolean,
 ) {
     var sliderValue by remember { mutableFloatStateOf(listSizeInit.toFloat()) }
     Column(

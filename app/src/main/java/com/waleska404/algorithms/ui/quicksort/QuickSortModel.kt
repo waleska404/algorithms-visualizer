@@ -16,5 +16,6 @@ data class QuickSortItem(
     val isLeftPointer: Boolean,
     val isRightPointer: Boolean,
     val alreadyOrdered: Boolean,
+    val inSortingRange: Boolean,
     val value: Int,
 )

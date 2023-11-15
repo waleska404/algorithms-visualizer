@@ -9,7 +9,7 @@ val ContrastColorDark = Color(0xFFC2CCE4)
 val SecondaryContrastColorDark = Color(0xFF92D5DB)
 // TODO: quitar la transparencia con color picker
 val AccentContentDark = Color(0xC4999BFF)
-val DisabledColorDark = Color(0xFF3C4C58)
+val DisabledColorDark = Color(0xFF3C4358)
 
 // light theme colors
 val MainColorLight = Color(0xFFC2CCE4)

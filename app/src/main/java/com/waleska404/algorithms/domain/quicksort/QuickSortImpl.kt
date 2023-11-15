@@ -41,8 +41,8 @@ class QuickSortImpl @Inject constructor() : QuickSort {
             emit(
                 QuickSortInfo(
                     currentPivot = pivot,
-                    currentLeft = l,
-                    currentRight = r,
+                    currentLeft = if(l < list.size) l else list.size-1,
+                    currentRight = if (r >= 0) r else 0,
                     shouldSwapPointers = false,
                     shouldSwapPivot = true,
                     sortingSubarray = Pair(start, end),
@@ -51,19 +51,25 @@ class QuickSortImpl @Inject constructor() : QuickSort {
             delay(500)
             val leftSubArrayIsSmaller = r - 1 - start < end - (r + 1)
             if (leftSubArrayIsSmaller) {
-                runQuickSort(list, start, r - 1).collect { info ->
-                    emit(info)
-                }
-                runQuickSort(list, r + 1, end).collect { info ->
-                    emit(info)
-                }
+                runQuickSort(list, start, r - 1).collect { info -> emit(info) }
+                runQuickSort(list, r + 1, end).collect { info -> emit(info) }
             } else {
-                runQuickSort(list, r + 1, end).collect { info ->
-                    emit(info)
-                }
-                runQuickSort(list, start, r - 1).collect { info ->
-                    emit(info)
-                }
+                runQuickSort(list, r + 1, end).collect { info -> emit(info) }
+                runQuickSort(list, start, r - 1).collect { info -> emit(info) }
+            }
+        } else {
+            if (start < list.size) {
+                emit(
+                    QuickSortInfo(
+                        baseCase = true,
+                        currentPivot = start,
+                        currentLeft = start,
+                        currentRight = start,
+                        shouldSwapPointers = false,
+                        shouldSwapPivot = false,
+                        sortingSubarray = Pair(start, end),
+                    )
+                )
             }
         }
     }

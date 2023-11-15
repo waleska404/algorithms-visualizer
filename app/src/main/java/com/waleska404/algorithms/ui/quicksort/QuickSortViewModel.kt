@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.quicksort.QuickSort
+import com.waleska404.algorithms.domain.quicksort.QuickSortInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,7 @@ class QuickSortViewModel @Inject constructor(
     private var _isSorting = MutableStateFlow(false)
     val isSorting: StateFlow<Boolean> = _isSorting
 
-    private var _listToSort = MutableStateFlow(getFakeSortingList())
+    private var _listToSort = MutableStateFlow(getRandomSortingList())
     val listToSort: StateFlow<QuickSortList> = _listToSort
 
     private fun getRandomSortingList(size: Int = 9): QuickSortList {
@@ -32,9 +33,130 @@ class QuickSortViewModel @Inject constructor(
                 isRightPointer = false,
                 alreadyOrdered = false,
                 value = (30..100).random(),
+                inSortingRange = false,
             )
         }
         return QuickSortList(list = list)
+    }
+
+    fun randomizeCurrentList(size: Int = listToSort.value.list.size) {
+        _listToSort.value = getRandomSortingList(size)
+    }
+
+    fun startSorting() {
+        val dataList = _listToSort.value.toDataList()
+        _isSorting.value = true
+        var lastLeftPointer = 0
+        var lastRightPointer = 0
+        viewModelScope.launch {
+            quickSort.runQuickSort(dataList, 0, dataList.size - 1).collect { quickSortInfo ->
+                // mark the elements that are being considered for the sorting
+                checkInSortingRange(quickSortInfo.sortingSubarray)
+
+                // base case: sorting only one element
+                if (quickSortInfo.baseCase) {
+                    val pivot = quickSortInfo.currentPivot
+                    if (!listToSort.value.list[pivot].alreadyOrdered) {
+                        val newListCompare = _listToSort.value.list.toMutableList()
+                        newListCompare[pivot] = newListCompare[pivot].copy(isPivot = true)
+                        _listToSort.value = _listToSort.value.copy(list = newListCompare)
+                        delay(500)
+                        val newListSorted = _listToSort.value.list.toMutableList()
+                        newListSorted[pivot] = newListSorted[pivot].copy(isPivot = false, alreadyOrdered = true)
+                        _listToSort.value = _listToSort.value.copy(list = newListSorted)
+                    }
+                } else {
+                    // sorting more than one element
+                    val pivot = quickSortInfo.currentPivot
+                    val leftPointer = quickSortInfo.currentLeft
+                    val rightPointer = quickSortInfo.currentRight
+
+                    // uncheck latest items as being compared
+                    val newListCompare = _listToSort.value.list.toMutableList()
+                    newListCompare[lastLeftPointer] =
+                        newListCompare[lastLeftPointer].copy(isLeftPointer = false, isRightPointer = false)
+                    newListCompare[lastRightPointer] =
+                        newListCompare[lastRightPointer].copy(isRightPointer = false, isLeftPointer = false)
+                    lastLeftPointer = leftPointer
+                    lastRightPointer = rightPointer
+
+                    // mark current items as being compared
+                    newListCompare[pivot] = newListCompare[pivot].copy(isPivot = true)
+                    newListCompare[leftPointer] = newListCompare[leftPointer].copy(isLeftPointer = true)
+                    newListCompare[rightPointer] = newListCompare[rightPointer].copy(isRightPointer = true)
+                    _listToSort.value = _listToSort.value.copy(list = newListCompare)
+                    delay(500)
+
+                    // swap if necessary
+                    if (quickSortInfo.shouldSwapPointers) {
+                        swapOnCurrentList(leftPointer, rightPointer)
+                    }
+                    if (quickSortInfo.shouldSwapPivot) {
+                        swapOnCurrentList(pivot, rightPointer)
+                        delay(500)
+                        val newListAfterSwap = _listToSort.value.list.toMutableList()
+                        newListAfterSwap[pivot] = newListAfterSwap[pivot].copy(
+                            isRightPointer = false,
+                            isLeftPointer = false,
+                        )
+                        newListAfterSwap[rightPointer] = newListAfterSwap[rightPointer].copy(
+                            alreadyOrdered = true,
+                            isPivot = false,
+                        )
+                        newListAfterSwap[leftPointer] = newListAfterSwap[leftPointer].copy(
+                            isRightPointer = false,
+                            isLeftPointer = false,
+                        )
+                        _listToSort.value = _listToSort.value.copy(list = newListAfterSwap)
+                    }
+                    delay(500)
+                }
+            }
+            _isSorting.value = false
+            resetColors()
+        }
+    }
+
+    private fun resetColors() {
+        val newList = mutableListOf<QuickSortItem>()
+        for (i in _listToSort.value.list) {
+            newList.add(
+                i.copy(
+                    isPivot = false,
+                    isLeftPointer = false,
+                    isRightPointer = false,
+                    alreadyOrdered = false
+                )
+            )
+        }
+        _listToSort.value = _listToSort.value.copy(list = newList)
+    }
+
+    private fun swapOnCurrentList(i: Int, j: Int) {
+        val newListSwap = _listToSort.value.list.toMutableList()
+        val temp = newListSwap[i].copy()
+        newListSwap[i] = newListSwap[j].copy()
+        newListSwap[j] = temp
+        _listToSort.value = _listToSort.value.copy(list = newListSwap)
+    }
+
+    private fun checkInSortingRange(range: Pair<Int, Int>) {
+        val newList = _listToSort.value.list.toMutableList().mapIndexed { index, value ->
+            value.copy(inSortingRange = index in range.first..range.second)
+        }
+        _listToSort.value = _listToSort.value.copy(list = newList)
+    }
+
+    private fun logQuickSortInfo(quickSortInfo: QuickSortInfo) {
+        Log.i(
+            "MYTAG",
+            "currentPivot: ${quickSortInfo.currentPivot}, " +
+                    "currentLeft: ${quickSortInfo.currentLeft}, " +
+                    "currentRight: ${quickSortInfo.currentRight}, " +
+                    "shouldSwapPointers: ${quickSortInfo.shouldSwapPointers}, " +
+                    "shouldSwapPivot: ${quickSortInfo.shouldSwapPivot}, " +
+                    "sortingSubarray: ${quickSortInfo.sortingSubarray}, "
+        )
     }
 
     private fun getFakeSortingList(): QuickSortList {
@@ -46,7 +168,8 @@ class QuickSortViewModel @Inject constructor(
                     isLeftPointer = false,
                     isRightPointer = false,
                     alreadyOrdered = false,
-                    value = 80,
+                    inSortingRange = false,
+                    value = 87,
                 ),
                 QuickSortItem(
                     id = 1,
@@ -54,7 +177,8 @@ class QuickSortViewModel @Inject constructor(
                     isLeftPointer = false,
                     isRightPointer = false,
                     alreadyOrdered = false,
-                    value = 50,
+                    inSortingRange = false,
+                    value = 41,
                 ),
                 QuickSortItem(
                     id = 2,
@@ -62,7 +186,8 @@ class QuickSortViewModel @Inject constructor(
                     isLeftPointer = false,
                     isRightPointer = false,
                     alreadyOrdered = false,
-                    value = 20,
+                    inSortingRange = false,
+                    value = 44,
                 ),
                 QuickSortItem(
                     id = 3,
@@ -70,7 +195,8 @@ class QuickSortViewModel @Inject constructor(
                     isLeftPointer = false,
                     isRightPointer = false,
                     alreadyOrdered = false,
-                    value = 90,
+                    inSortingRange = false,
+                    value = 59,
                 ),
                 QuickSortItem(
                     id = 4,
@@ -78,14 +204,17 @@ class QuickSortViewModel @Inject constructor(
                     isLeftPointer = false,
                     isRightPointer = false,
                     alreadyOrdered = false,
-                    value = 50,
+                    inSortingRange = false,
+                    value = 37,
                 ),
+                /*
                 QuickSortItem(
                     id = 5,
                     isPivot = false,
                     isLeftPointer = false,
                     isRightPointer = false,
                     alreadyOrdered = false,
+                    inSortingRange = false,
                     value = 60,
                 ),
                 QuickSortItem(
@@ -94,85 +223,11 @@ class QuickSortViewModel @Inject constructor(
                     isLeftPointer = false,
                     isRightPointer = false,
                     alreadyOrdered = false,
+                    inSortingRange = false,
                     value = 30,
-                )
+                )*/
             )
         )
-    }
-
-    fun randomizeCurrentList(size: Int = listToSort.value.list.size) {
-        //_listToSort.value = getRandomSortingList(size)
-        _listToSort.value = getFakeSortingList()
-    }
-
-    fun startSorting() {
-        val dataList = _listToSort.value.toDataList()
-        _isSorting.value = true
-        viewModelScope.launch {
-            quickSort.runQuickSort(dataList, 0, dataList.size - 1).collect { quickSortInfo ->
-                Log.i("MYTAG",
-                    "currentPivot: ${quickSortInfo.currentPivot}, " +
-                            "currentLeft: ${quickSortInfo.currentLeft}, " +
-                            "currentRight: ${quickSortInfo.currentRight}, " +
-                            "shouldSwapPointers: ${quickSortInfo.shouldSwapPointers}, " +
-                            "shouldSwapPivot: ${quickSortInfo.shouldSwapPivot}, " +
-                            "sortingSubarray: ${quickSortInfo.sortingSubarray}, "
-                )
-                val pivot = quickSortInfo.currentPivot
-                val leftPointer = quickSortInfo.currentLeft
-                val rightPointer = quickSortInfo.currentRight
-
-                // mark current items as being compared
-                val newListCompare = _listToSort.value.list.toMutableList()
-                newListCompare[pivot] = newListCompare[pivot].copy(isPivot = true)
-                newListCompare[leftPointer] = newListCompare[leftPointer].copy(isLeftPointer = true)
-                newListCompare[rightPointer] = newListCompare[rightPointer].copy(isRightPointer = true)
-                _listToSort.value = _listToSort.value.copy(list = newListCompare)
-                delay(2000)
-
-                if (quickSortInfo.shouldSwapPointers) {
-                    swapOnCurrentList(leftPointer, rightPointer)
-                }
-                if (quickSortInfo.shouldSwapPivot) {
-                    swapOnCurrentList(pivot, rightPointer)
-                    delay(2000)
-                    val newListAfterSwap = _listToSort.value.list.toMutableList()
-                    newListAfterSwap[pivot] = newListAfterSwap[pivot].copy(isRightPointer = false)
-                    newListAfterSwap[rightPointer] = newListAfterSwap[rightPointer].copy(alreadyOrdered = true, isPivot = false)
-                    _listToSort.value = _listToSort.value.copy(list = newListAfterSwap)
-                }
-
-                delay(500)
-                // uncheck as being compared
-                val newList = _listToSort.value.list.toMutableList()
-                newList[leftPointer] = newList[leftPointer].copy(isLeftPointer = false, isRightPointer = false)
-                newList[rightPointer] = newList[rightPointer].copy(isRightPointer = false, isLeftPointer = false)
-                _listToSort.value = _listToSort.value.copy(list = newList)
-            }
-            _isSorting.value = false
-            resetColors()
-        }
-    }
-
-    private fun resetColors() {
-        val newList = mutableListOf<QuickSortItem>()
-        for(i in _listToSort.value.list) {
-            newList.add(i.copy(
-                isPivot = false,
-                isLeftPointer = false,
-                isRightPointer = false,
-                alreadyOrdered = false
-            ))
-        }
-        _listToSort.value = _listToSort.value.copy(list = newList)
-    }
-
-    private fun swapOnCurrentList(i: Int, j: Int) {
-        val newListSwap = _listToSort.value.list.toMutableList()
-        val temp = newListSwap[i].copy()
-        newListSwap[i] = newListSwap[j].copy()
-        newListSwap[j] = temp
-        _listToSort.value = _listToSort.value.copy(list = newListSwap)
     }
 
 }
