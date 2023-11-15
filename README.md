@@ -20,9 +20,6 @@ An algorithms visualizer Android app using compose and Hilt based on modern Andr
 <img src="/gif/bubble-dark.gif" width="270"/>
 </p>
 
-## TODO
-- Add algorithms: Merge Sort, Dijkstra's algorithm...
-
 ## Tech stack
 - 100% [Kotlin](https://kotlinlang.org/) based + [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 - Hilt for dependency injection.
@@ -32,7 +29,20 @@ An algorithms visualizer Android app using compose and Hilt based on modern Andr
   - ViewModel - UI related data holder, lifecycle aware.
 - Architecture
   - MVVM Architecture (Declarative View - ViewModel - Model)
-- Material Design & Animations
+- Material Design & Animations.
+
+## Features
+- Visualize Bubble Sort.
+- Visualize Quick Sort.
+- Change list size.
+- Randomize values of the list.
+
+## Future Features (Contributions are welcome!)
+- Space and time complexity information.
+- Speed up the animation.
+- Pause the animation.
+- Improve animations.
+- Other algorithms support: Merge Sort, Dijkstra's algorithm...
 
 ## Find this repository useful? :heart:
 Support it by joining __[stargazers](https://github.com/waleska404/algorithms-visualizer/stargazers)__ for this repository. :star: <br>
