@@ -1,6 +1,6 @@
 <h1 align="center">🧮 Algorithms Visualizer</h1></br>
 <p align="center">  
-An algorithms visualizer Android app using compose and Hilt based on modern Android tech-stacks and MVVM architecture.
+An algorithms visualizer Android app using Compose and Hilt based on modern Android tech-stacks and MVVM architecture.
 </p>
 </br>
 
@@ -28,6 +28,7 @@ An algorithms visualizer Android app using compose and Hilt based on modern Andr
   - Lifecycle - dispose observing data when lifecycle state changes.
   - ViewModel - UI related data holder, lifecycle aware.
 - Architecture
+  - Clean Architecture
   - MVVM Architecture (Declarative View - ViewModel - Model)
 - Material Design & Animations.
 
