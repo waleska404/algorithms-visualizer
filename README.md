@@ -5,11 +5,10 @@ An algorithms visualizer Android app using compose and Hilt based on modern Andr
 </br>
 
 <p align="center">
-  <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=21"><img alt="API" src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://github.com/skydoves/DisneyCompose/actions"><img alt="Build Status" src="https://github.com/skydoves/DisneyCompose/workflows/Android%20CI/badge.svg"/></a>
-  <a href="https://proandroiddev.com/exploring-jetpack-compose-with-dagger-hilt-and-viewmodels-3e0ca939daa7"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
-  <a href="https://github.com/skydoves"><img alt="Profile" src="https://skydoves.github.io/badges/skydoves.svg"/></a> 
+  <a href="https://opensource.org/licenses/MIT"><img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg"/></a>
+  <a href="https://android-arsenal.com/api?level=24"><img alt="API" src="https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat"/></a>
+  <a href="https://github.com/waleska404"><img alt="Profile" src="https://img.shields.io/badge/GitHub-waleska404-purple"/></a> 
+  <a href="https://github.com/waleska404/algorithms-visualizer"><img alt="Profile" src="https://img.shields.io/github/stars/waleska404/algorithms-visualizer"/></a> 
 </p>
 
 ## Screenshots
