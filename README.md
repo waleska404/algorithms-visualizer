@@ -11,12 +11,17 @@ An algorithms visualizer Android app using compose and Hilt based on modern Andr
   <a href="https://github.com/waleska404/algorithms-visualizer"><img alt="Profile" src="https://img.shields.io/github/stars/waleska404/algorithms-visualizer"/></a> 
 </p>
 
+<h3 align="center">🚧 IN PROGRESS 🚧</h2>
+
 ## Screenshots
 <p align="center">
 <img src="/gif/home-light.gif" width="270"/>
 <img src="/gif/bubble-light.gif" width="270"/>
 <img src="/gif/bubble-dark.gif" width="270"/>
 </p>
+
+## TODO
+- Add algorithms: Merge Sort, Dijkstra's algorithm...
 
 ## Tech stack
 - 100% [Kotlin](https://kotlinlang.org/) based + [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
