@@ -14,9 +14,9 @@ An algorithms visualizer Android app using compose and Hilt based on modern Andr
 
 ## Screenshots
 <p align="center">
-<img src="https://user-images.githubusercontent.com/24237865/93901108-238eb000-fd31-11ea-9fac-c9ba1eca146c.gif" width="270"/>
-<img src="/preview/preview0.gif" width="270"/>
-<img src="/preview/preview1.gif" width="270"/>
+<img src="/gif/home-light.gif" width="270"/>
+<img src="/gif/bubble-light.gif" width="270"/>
+<img src="/gif/bubble-dark.gif" width="270"/>
 </p>
 
 ## Tech stack
