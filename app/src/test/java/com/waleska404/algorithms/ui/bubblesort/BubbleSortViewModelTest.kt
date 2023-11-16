@@ -1,12 +1,17 @@
 package com.waleska404.algorithms.ui.bubblesort
 
 import com.waleska404.algorithms.domain.bubblesort.BubbleSort
-import com.waleska404.algorithms.domain.bubblesort.BubbleSortInfo
+import com.waleska404.algorithms.domain.bubblesort.BubbleSortDomainModel
 import com.waleska404.algorithms.testrules.CoroutinesTestRule
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
@@ -29,20 +34,6 @@ class BubbleSortViewModelTest {
 
     @Before
     fun setUp() {
-        every { bubbleSort.runBubbleSort(any()) } returns flowOf(
-            BubbleSortInfo(
-                currentItem = 0,
-                shouldSwap = false
-            ),
-            BubbleSortInfo(
-                currentItem = 1,
-                shouldSwap = true
-            ),
-            BubbleSortInfo(
-                currentItem = 2,
-                shouldSwap = false
-            ),
-        )
         viewModel = BubbleSortViewModel(bubbleSort)
     }
 
@@ -76,7 +67,36 @@ class BubbleSortViewModelTest {
         assertTrue(viewModel.isSorting.value)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `startSorting updates listToSort variable correctly`()  = runTest {
+        // arrange
+        every { bubbleSort.runBubbleSort(any()) } returns flowOf(
+            BubbleSortDomainModel(
+                currentItem = 0,
+                shouldSwap = false
+            ),
+            BubbleSortDomainModel(
+                currentItem = 1,
+                shouldSwap = true
+            ),
+        )
+        viewModel.randomizeCurrentList(3)
+        val oldList = viewModel.listToSort.value.list.toMutableList()
 
+        // swap values on indexes 1 and 2
+        val temp = oldList[1]
+        oldList[1] = oldList[2]
+        oldList[2] = temp
 
+        // act
+        launch {
+            viewModel.startSorting()
+        }
+        advanceUntilIdle()
 
+        // assert
+        val newList = viewModel.listToSort.value.list.toMutableList()
+        assertEquals(oldList, newList)
+    }
 }
