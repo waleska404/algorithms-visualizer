@@ -31,6 +31,7 @@ An algorithms visualizer Android app using Compose and Hilt based on modern Andr
   - Clean Architecture
   - MVVM Architecture (Declarative View - ViewModel - Model)
 - Material Design & Animations.
+- JUnit for testing.
 
 ## Features
 - Visualize Bubble Sort.
