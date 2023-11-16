@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.quicksort.QuickSort
-import com.waleska404.algorithms.domain.quicksort.QuickSortInfo
+import com.waleska404.algorithms.domain.quicksort.QuickSortDomainModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -147,7 +147,7 @@ class QuickSortViewModel @Inject constructor(
         _listToSort.value = _listToSort.value.copy(list = newList)
     }
 
-    private fun logQuickSortInfo(quickSortInfo: QuickSortInfo) {
+    private fun logQuickSortInfo(quickSortInfo: QuickSortDomainModel) {
         Log.i(
             "MYTAG",
             "currentPivot: ${quickSortInfo.currentPivot}, " +

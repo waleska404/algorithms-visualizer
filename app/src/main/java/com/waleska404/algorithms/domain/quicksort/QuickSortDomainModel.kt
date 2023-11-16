@@ -1,6 +1,6 @@
 package com.waleska404.algorithms.domain.quicksort
 
-class QuickSortInfo(
+class QuickSortDomainModel(
     val baseCase: Boolean = false,
     val currentPivot: Int,
     val currentLeft: Int,

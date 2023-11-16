@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class QuickSortImpl @Inject constructor() : QuickSort {
 
-    override fun runQuickSort(list: MutableList<Int>, start: Int, end: Int): Flow<QuickSortInfo> = flow {
+    override fun runQuickSort(list: MutableList<Int>, start: Int, end: Int): Flow<QuickSortDomainModel> = flow {
         if (start < end) {
             Log.i("QuickSort", "RUNQUICKSORT -> start: $start, end: $end")
             val pivot = start
@@ -24,7 +24,7 @@ class QuickSortImpl @Inject constructor() : QuickSort {
                     shouldSwap = true
                 }
                 emit(
-                    QuickSortInfo(
+                    QuickSortDomainModel(
                         currentPivot = pivot,
                         currentLeft = l,
                         currentRight = r,
@@ -39,7 +39,7 @@ class QuickSortImpl @Inject constructor() : QuickSort {
             }
             list.swap(pivot, r)
             emit(
-                QuickSortInfo(
+                QuickSortDomainModel(
                     currentPivot = pivot,
                     currentLeft = if(l < list.size) l else list.size-1,
                     currentRight = if (r >= 0) r else 0,
@@ -60,7 +60,7 @@ class QuickSortImpl @Inject constructor() : QuickSort {
         } else {
             if (start < list.size) {
                 emit(
-                    QuickSortInfo(
+                    QuickSortDomainModel(
                         baseCase = true,
                         currentPivot = start,
                         currentLeft = start,
