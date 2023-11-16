@@ -47,17 +47,27 @@ class BubbleSortViewModel @Inject constructor(
                 // mark current items as being compared
                 val newListCompare = _listToSort.value.list.toMutableList()
                 newListCompare[index] = newListCompare[index].copy(isCurrentlyCompared = true)
-                newListCompare[index + 1] = newListCompare[index + 1].copy(isCurrentlyCompared = true)
+                if(index < newListCompare.size-1) newListCompare[index + 1] = newListCompare[index + 1].copy(isCurrentlyCompared = true)
                 _listToSort.value = _listToSort.value.copy(list = newListCompare)
                 delay(500)
+                println("-------------------------")
+                println("-------------------------")
+                println("---------Comparing----------------")
+                println("marked current items as being compared: index: $index")
+                if(index < newListCompare.size-1) println("marked next items as being compared: index + 1: ${index + 1}")
+                println("current item: ${_listToSort.value.list[index]}")
+                if(index < newListCompare.size-1) println("current item+1: ${_listToSort.value.list[index+1]}")
 
                 // swap if necessary
                 if (bubbleSortInfo.shouldSwap) {
+                    println("---------Swaping----------------")
                     val newListSwap = _listToSort.value.list.toMutableList()
                     val temp = newListSwap[index].copy()
                     newListSwap[index] = newListSwap[index + 1].copy()
                     newListSwap[index + 1] = temp
                     _listToSort.value = _listToSort.value.copy(list = newListSwap)
+                    println("current item: ${_listToSort.value.list[index]}")
+                    println("current item: ${_listToSort.value.list[index+1]}")
                 }
 
                 delay(500)
@@ -66,10 +76,12 @@ class BubbleSortViewModel @Inject constructor(
                 newList[index] = newList[index].copy(isCurrentlyCompared = false)
                 newList[index + 1] = newList[index + 1].copy(isCurrentlyCompared = false)
                 _listToSort.value = _listToSort.value.copy(list = newList)
+                println("---------Uncheck----------------")
+                println("current item: ${_listToSort.value.list[index]}")
+                println("current item+1: ${_listToSort.value.list[index+1]}")
             }
             _isSorting.value = false
         }
-
     }
 
 }
