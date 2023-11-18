@@ -20,7 +20,7 @@ class DijkstraImpl {
         finish: Position,
         walls: List<Position>
     ): Flow<DijkstraDomainModel> {
-        Log.i("MYTAG", "gridSize: $gridSize, row: $row, col: $col, finish: $finish")
+        Log.i("MYTAG", "gridSize: $gridSize, row: $row, col: $col, start: $start, finish: $finish")
         return flow {
             val visitedNodesInOrder = mutableListOf<CellDomainData>()
 

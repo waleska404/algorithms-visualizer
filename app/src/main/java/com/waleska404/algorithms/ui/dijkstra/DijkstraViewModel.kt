@@ -8,6 +8,8 @@ import com.waleska404.algorithms.domain.dijkstra.Position
 import com.waleska404.algorithms.ui.core.components.CellType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,36 +23,33 @@ class DijkstraViewModel @Inject constructor(
     val dijkstra: DijkstraImpl
 ) : ViewModel() {
 
-    private var gridState: MutableList<MutableList<CellData>> = mutableListOf()
-    private var walls: List<Position> = listOf()
-
     private val startPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4))
     private val finishPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4) * 3)
+
+    private var _gridState = MutableStateFlow(getInitialGrid())
+    val gridState: StateFlow<DijkstraGrid> = _gridState
+
+    private var walls: MutableList<Position> = mutableListOf()
 
     var isVisualizing = false
         private set
 
-    init {
-        clear()
-    }
-
     fun clear() {
-        gridState = getInitGridState()
-        walls = listOf()
+        _gridState.value = getInitialGrid()
+        walls = mutableListOf()
         isVisualizing = false
-        addStartAndFinishGrids()
     }
 
     fun randomizeWalls() {
         clear()
         val newWalls = mutableListOf<Position>()
-        for (i in 0 until gridState.size) {
-            for (j in 0 until gridState[i].size) {
-                val position = gridState[i][j].position
+        for (i in 0 until _gridState.value.grid.size) {
+            for (j in 0 until _gridState.value.grid[i].size) {
+                val position = _gridState.value.grid[i][j].position
 
                 if (isPositionNotAtStartOrFinish(position)) {
                     updateCellTypeAtPosition(position, weightedRandomWall())
-                    if (gridState[i][j].type == CellType.WALL) {
+                    if (_gridState.value.grid[i][j].type == CellType.WALL) {
                         newWalls.add(position)
                     }
                 }
@@ -59,6 +58,7 @@ class DijkstraViewModel @Inject constructor(
         walls = newWalls
     }
 
+    /*
     fun drawCurrentGridState(): List<List<CellData>> {
         val updatedGrid = getInitGridState()
 
@@ -69,17 +69,18 @@ class DijkstraViewModel @Inject constructor(
         }
 
         return updatedGrid
-    }
+    }*/
 
     fun getFinishPosition() = finishPosition
 
-    fun getCurrentGrid(): List<List<CellData>> = gridState
+    //fun getCurrentGrid(): List<List<CellData>> = gridState
 
     fun toggleCellTypeToWall(p: Position) {
         if (getCellAtPosition(p).type == CellType.WALL) {
             updateCellTypeAtPosition(p, CellType.BACKGROUND)
         } else {
             updateCellTypeAtPosition(p, CellType.WALL)
+            walls.add(p)
         }
     }
 
@@ -88,13 +89,40 @@ class DijkstraViewModel @Inject constructor(
                 getCellAtPosition(p).type != CellType.FINISH
 
 
-    private fun updateCellTypeAtPosition(p: Position, cellType: CellType) {
-        gridState[p.row][p.column] = getCellAtPosition(p).copy(type = cellType)
+    private fun updateCellTypeAtPosition(position: Position, cellType: CellType) {
+        val i = position.row
+        val j = position.column
+        val newGrid = _gridState.value.grid.toMutableList()
+        val newRow = newGrid[i].toMutableList()
+        newRow[j] = newRow[j].copy(type = cellType)
+        newGrid[i] = newRow
+        _gridState.value = _gridState.value.copy(grid = newGrid)
     }
 
+    private fun updateCellIsVisitedAtPosition(position: Position, isVisited: Boolean) {
+        val i = position.row
+        val j = position.column
+        val newGrid = _gridState.value.grid.toMutableList()
+        val newRow = newGrid[i].toMutableList()
+        newRow[j] = newRow[j].copy(isVisited = isVisited)
+        newGrid[i] = newRow
+        _gridState.value = _gridState.value.copy(grid = newGrid)
+    }
+
+    private fun updateCellIsShortestPathAtPosition(position: Position, isShortestPath: Boolean) {
+        val i = position.row
+        val j = position.column
+        val newGrid = _gridState.value.grid.toMutableList()
+        val newRow = newGrid[i].toMutableList()
+        newRow[j] = newRow[j].copy(isShortestPath = isShortestPath)
+        newGrid[i] = newRow
+        _gridState.value = _gridState.value.copy(grid = newGrid)
+    }
+
+    /*
     fun setCellVisitedAtPosition(p: Position) {
         gridState[p.row][p.column] = getCellAtPosition(p).copy(isVisited = true)
-    }
+    }*/
 
     fun animatedShortestPath() {
         viewModelScope.launch {
@@ -111,14 +139,11 @@ class DijkstraViewModel @Inject constructor(
                     dijkstraInfo.shortestPath.forEach {
                         Log.i("MYTAG", "shortestPath: ${it.position.row}, ${it.position.column}")
                         val p = it.position
-                        gridState[p.row][p.column] = gridState[p.row][p.column].copy(isShortestPath = true)
+                        updateCellIsShortestPathAtPosition(p, true)
                         delay(GAME_DELAY_IN_MS)
                     }
                 } else if (dijkstraInfo.position != null) {
-                    gridState[dijkstraInfo.position.row][dijkstraInfo.position.column] =
-                        gridState[dijkstraInfo.position.row][dijkstraInfo.position.column].copy(
-                            isVisited = true
-                        )
+                    updateCellIsVisitedAtPosition(dijkstraInfo.position, true)
                 }
             }
             /*
@@ -132,31 +157,51 @@ class DijkstraViewModel @Inject constructor(
 
     fun getFinishCell() = getCellAtPosition(finishPosition)
 
-    fun getCellAtPosition(p: Position) = gridState[p.row][p.column]
-
-    private fun addStartAndFinishGrids() {
-        gridState[startPosition.row][startPosition.column] =
-            CellData(CellType.START, startPosition, distance = 0)
-        gridState[finishPosition.row][finishPosition.column] =
-            CellData(CellType.FINISH, finishPosition)
-    }
+    private fun getCellAtPosition(p: Position) = _gridState.value.grid[p.row][p.column]
 
     private fun getInitGridState() = getGridWithClearBackground()
 
-    fun getGridWithClearBackground(): MutableList<MutableList<CellData>> {
-        val mutableGrid = MutableList(NUMBER_OF_ROWS) {
+    private fun getGridWithClearBackground(): DijkstraGrid {
+        val mutableGrid = List(NUMBER_OF_ROWS) {
             MutableList(NUMBER_OF_COLUMNS) {
                 CellData(CellType.BACKGROUND, Position(0, 0))
             }
         }
-
         for (i in 0 until NUMBER_OF_ROWS) {
             for (j in 0 until NUMBER_OF_COLUMNS) {
                 mutableGrid[i][j] = CellData(CellType.BACKGROUND, Position(i, j))
             }
         }
 
-        return mutableGrid
+        return DijkstraGrid(
+            grid = mutableGrid
+        )
+    }
+
+    private fun getInitialGrid() : DijkstraGrid {
+        Log.i("MYTAG", "getInitialGRID: startPosition: $startPosition, finishPosition: $finishPosition")
+        val mutableGrid = List(NUMBER_OF_ROWS) {
+            MutableList(NUMBER_OF_COLUMNS) {
+                CellData(CellType.BACKGROUND, Position(0, 0))
+            }
+        }
+        for (i in 0 until NUMBER_OF_ROWS) {
+            for (j in 0 until NUMBER_OF_COLUMNS) {
+                if(startPosition == Position(i, j)) {
+                    Log.i("MYTAG", "START POSITION: $i, $j")
+                    mutableGrid[i][j] = CellData(CellType.START, Position(i, j))
+                } else if(finishPosition == Position(i, j)) {
+                    Log.i("MYTAG", "FINISH POSITION: $i, $j")
+                    mutableGrid[i][j] = CellData(CellType.FINISH, Position(i, j))
+                } else {
+                    mutableGrid[i][j] = CellData(CellType.BACKGROUND, Position(i, j))
+                }
+            }
+        }
+
+        return DijkstraGrid(
+            grid = mutableGrid
+        )
     }
 
     private fun weightedRandomWall(): CellType {

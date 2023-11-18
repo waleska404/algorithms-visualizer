@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.waleska404.algorithms.R
 import com.waleska404.algorithms.domain.dijkstra.Position
-import com.waleska404.algorithms.domain.utils.toLinearGrid
 import com.waleska404.algorithms.ui.core.components.CELL_FINISH
 import com.waleska404.algorithms.ui.core.components.CELL_START
 import com.waleska404.algorithms.ui.core.components.CELL_VISITED
@@ -32,64 +33,61 @@ import com.waleska404.algorithms.ui.core.components.CustomIconButton
 import com.waleska404.algorithms.ui.core.components.PathFindingGrid
 import kotlinx.coroutines.delay
 
-//private val state = DijkstraViewModel(DijkstraImpl())
-//private val scope = CoroutineScope(Dispatchers.Default)
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DijkstraScreen(
     navigateToHome: () -> Unit,
-    state: DijkstraViewModel = hiltViewModel(),
+    viewModel: DijkstraViewModel = hiltViewModel(),
 ) {
-    PathFindingApp(state)
-}
-
-
-@ExperimentalFoundationApi
-@Composable
-fun PathFindingApp(
-    state: DijkstraViewModel,
-) {
-    val currentGridState = remember { mutableStateOf(state.drawCurrentGridState()) }
+    //val currentGridState = remember { mutableStateOf(state.drawCurrentGridState()) }
+    val currentGridState: DijkstraGrid by viewModel.gridState.collectAsState()
 
     val onCellClicked = { p: Position ->
-        if (state.isPositionNotAtStartOrFinish(p) && !state.isVisualizing) {
-            state.toggleCellTypeToWall(p)
-            currentGridState.value = state.drawCurrentGridState()
+        if (viewModel.isPositionNotAtStartOrFinish(p) && !viewModel.isVisualizing) {
+            viewModel.toggleCellTypeToWall(p)
+            //currentGridState.value = viewModel.drawCurrentGridState()
         }
     }
 
-    PathFindingUi(currentGridState.value, onCellClicked, state)
+    PathFindingUi(
+        grid = currentGridState,
+        onClick = onCellClicked,
+        onVisualize = {
+            viewModel.animatedShortestPath()
+        },
+        onRandomizeWalls = {
+            viewModel.randomizeWalls()
+        },
+        onClear = {
+            viewModel.clear()
+        }
+    )
     LaunchedEffect(Unit) {
         while (true) {
             delay(GAME_DELAY_IN_MS)
-            currentGridState.value = state.drawCurrentGridState()
+            //currentGridState.value = viewModel.drawCurrentGridState()
         }
     }
 }
 
 @ExperimentalFoundationApi
 @Composable
-fun PathFindingUi(cell: List<List<CellData>>, onClick: (Position) -> Unit, state: DijkstraViewModel) {
+fun PathFindingUi(
+    grid: DijkstraGrid,
+    onClick: (Position) -> Unit,
+    onVisualize: () -> Unit,
+    onRandomizeWalls: () -> Unit,
+    onClear: () -> Unit,
+) {
     val isVisualizeEnabled = remember { mutableStateOf(true) }
-    val onVisualized: () -> Unit = {
-        state.animatedShortestPath()
-        isVisualizeEnabled.value = false
-    }
-    val onCleared: () -> Unit = {
-        state.clear()
-        isVisualizeEnabled.value = true
-    }
-    val onRandomizeWalls: () -> Unit = {
-        state.randomizeWalls()
-    }
 
     Column(
         modifier = Modifier.padding(8.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        PathFindingGrid(cell.toLinearGrid(), onClick)
+        PathFindingGrid(grid.toLinearGrid(), onClick)
 
         Column {
             Row {
@@ -101,7 +99,7 @@ fun PathFindingUi(cell: List<List<CellData>>, onClick: (Position) -> Unit, state
             Row {
                 VisualizeButton(
                     modifier = Modifier.padding(start = 16.dp),
-                    onClick = onVisualized,
+                    onClick = onVisualize,
                     enabled = isVisualizeEnabled.value
                 )
                 RandomWallsButton(
@@ -109,7 +107,7 @@ fun PathFindingUi(cell: List<List<CellData>>, onClick: (Position) -> Unit, state
                     onClick = onRandomizeWalls,
                     enabled = isVisualizeEnabled.value
                 )
-                ClearButton(modifier = Modifier.padding(horizontal = 16.dp), onCleared)
+                ClearButton(modifier = Modifier.padding(horizontal = 16.dp), onClick = onClear)
             }
         }
     }
