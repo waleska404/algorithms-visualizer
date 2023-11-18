@@ -23,7 +23,9 @@ data class CellDomainData(
 )
 
 data class DijkstraDomainModel(
-    val position: Position,
-    val type: CellType,
-    val visited: Boolean
+    val position: Position? = null,
+    val type: CellType? = null,
+    val visited: Boolean? = null,
+    val finished: Boolean,
+    val shortestPath: List<CellDomainData>? = null,
 )

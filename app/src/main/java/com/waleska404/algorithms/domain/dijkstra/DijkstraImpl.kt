@@ -11,18 +11,22 @@ import kotlinx.coroutines.flow.flow
 import kotlin.math.floor
 
 class DijkstraImpl {
-    suspend fun startDijkstra(gridSize: Int, row: Int, col: Int, start: Position, finish: Position): List<CellDomainData> {
-        animatedDijkstra(gridSize, row, col, start, finish)
-        //return getShortestPathOrder(finish)
-        return mutableListOf()
-    }
 
-    suspend fun animatedDijkstra(gridSize: Int, row: Int, col: Int, start: Position, finish: Position): Flow<DijkstraDomainModel> {
+    suspend fun animatedDijkstra(
+        gridSize: Int,
+        row: Int,
+        col: Int,
+        start: Position,
+        finish: Position,
+        walls: List<Position>
+    ): Flow<DijkstraDomainModel> {
         Log.i("MYTAG", "gridSize: $gridSize, row: $row, col: $col, finish: $finish")
         return flow {
             val visitedNodesInOrder = mutableListOf<CellDomainData>()
+
             val startIndex = getIndexFromPosition(start, col)
             val finishIndex = getIndexFromPosition(finish, col)
+
             val unvisitedNodes = MutableList(gridSize) {
                 CellDomainData(
                     id = it,
@@ -38,10 +42,15 @@ class DijkstraImpl {
             unvisitedNodes[finishIndex] = unvisitedNodes[finishIndex].copy(
                 type = CellType.FINISH
             )
-            val allNodes = unvisitedNodes.toMutableList()
-            allNodes.withIndex().map { (index, value) ->
-                Log.i("MYTAG", "allNodes: INDEX: $index, ID: ${value.id}, ${value.position.row}, ${value.position.column}")
+            Log.i("MYTAG", "FINISH POSITION: $finish, FINISH INDEX: $finishIndex")
+            walls.forEach {
+                val index = getIndexFromPosition(it, col)
+                unvisitedNodes[index] = unvisitedNodes[index].copy(
+                    type = CellType.WALL
+                )
             }
+            val allNodes = unvisitedNodes.toMutableList()
+
 
             while (unvisitedNodes.isNotEmpty()) {
                 sortNodesByDistance(unvisitedNodes)
@@ -52,17 +61,26 @@ class DijkstraImpl {
                 }
                 if (closestCell.distance == Int.MAX_VALUE) {
                     //TODO: emit return shortest path
+                    emit(
+                        DijkstraDomainModel(
+                            finished = true,
+                            shortestPath = getShortestPathOrder(allNodes[finishIndex])
+                        )
+                    )
                     //return visitedNodesInOrder
                 }
 
                 //TODO: emit set cell visited at position closestCell.position
-                emit(
-                    DijkstraDomainModel(
-                        position = closestCell.position,
-                        type = closestCell.type,
-                        visited = true,
+                if(closestCell.type != CellType.WALL) {
+                    emit(
+                        DijkstraDomainModel(
+                            position = closestCell.position,
+                            type = closestCell.type,
+                            visited = true,
+                            finished = false
+                        )
                     )
-                )
+                }
                 //gridState.setCellVisitedAtPosition(closestCell.position)
                 allNodes[closestCell.id] = closestCell.copy(isVisited = true)
                 visitedNodesInOrder.add(allNodes[closestCell.id])
@@ -70,9 +88,14 @@ class DijkstraImpl {
 
                 if (closestCell.isAtPosition(finish)) {
                     //TODO: emit return shortest path
+                    emit(
+                        DijkstraDomainModel(
+                            finished = true,
+                            shortestPath = getShortestPathOrder(allNodes[finishIndex])
+                        )
+                    )
                     //return visitedNodesInOrder
                 }
-                //PETA
                 updateUnvisitedNeighbors(
                     cell = closestCell,
                     allNodes = allNodes,
@@ -84,6 +107,12 @@ class DijkstraImpl {
                 delay(GAME_DELAY_IN_MS)
             }
             //TODO: emit return shortest path
+            emit(
+                DijkstraDomainModel(
+                    finished = true,
+                    shortestPath = getShortestPathOrder(allNodes[finishIndex])
+                )
+            )
             //return visitedNodesInOrder
         }
     }

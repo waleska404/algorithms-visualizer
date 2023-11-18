@@ -1,5 +1,6 @@
 package com.waleska404.algorithms.ui.dijkstra
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.dijkstra.DijkstraImpl
@@ -21,6 +22,7 @@ class DijkstraViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var gridState: MutableList<MutableList<CellData>> = mutableListOf()
+    private var walls: List<Position> = listOf()
 
     private val startPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4))
     private val finishPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4) * 3)
@@ -34,25 +36,27 @@ class DijkstraViewModel @Inject constructor(
 
     fun clear() {
         gridState = getInitGridState()
+        walls = listOf()
         isVisualizing = false
         addStartAndFinishGrids()
     }
 
     fun randomizeWalls() {
         clear()
-        viewModelScope.launch {
-            for (i in 0 until gridState.size) {
-                for (j in 0 until gridState[i].size) {
-                    val position = gridState[i][j].position
+        val newWalls = mutableListOf<Position>()
+        for (i in 0 until gridState.size) {
+            for (j in 0 until gridState[i].size) {
+                val position = gridState[i][j].position
 
-                    if (isPositionNotAtStartOrFinish(position)) {
-                        updateCellTypeAtPosition(position, weightedRandomWall())
+                if (isPositionNotAtStartOrFinish(position)) {
+                    updateCellTypeAtPosition(position, weightedRandomWall())
+                    if (gridState[i][j].type == CellType.WALL) {
+                        newWalls.add(position)
                     }
-
-                    delay(5.toLong())
                 }
             }
         }
+        walls = newWalls
     }
 
     fun drawCurrentGridState(): List<List<CellData>> {
@@ -96,16 +100,26 @@ class DijkstraViewModel @Inject constructor(
         viewModelScope.launch {
             isVisualizing = true
             val shortestPath = dijkstra.animatedDijkstra(
-                gridSize = NUMBER_OF_ROWS*NUMBER_OF_COLUMNS,
+                gridSize = NUMBER_OF_ROWS * NUMBER_OF_COLUMNS,
                 row = NUMBER_OF_ROWS,
                 col = NUMBER_OF_COLUMNS,
-                finish = Position(5,5),
-                start = startPosition
+                finish = finishPosition,
+                start = startPosition,
+                walls = walls
             ).collect { dijkstraInfo ->
-                gridState[dijkstraInfo.position.row][dijkstraInfo.position.column] =
-                    gridState[dijkstraInfo.position.row][dijkstraInfo.position.column].copy(
-                        isVisited = true
-                    )
+                if (dijkstraInfo.finished && !dijkstraInfo.shortestPath.isNullOrEmpty()) {
+                    dijkstraInfo.shortestPath.forEach {
+                        Log.i("MYTAG", "shortestPath: ${it.position.row}, ${it.position.column}")
+                        val p = it.position
+                        gridState[p.row][p.column] = gridState[p.row][p.column].copy(isShortestPath = true)
+                        delay(GAME_DELAY_IN_MS)
+                    }
+                } else if (dijkstraInfo.position != null) {
+                    gridState[dijkstraInfo.position.row][dijkstraInfo.position.column] =
+                        gridState[dijkstraInfo.position.row][dijkstraInfo.position.column].copy(
+                            isVisited = true
+                        )
+                }
             }
             /*
             shortestPath.forEach {
@@ -145,7 +159,7 @@ class DijkstraViewModel @Inject constructor(
         return mutableGrid
     }
 
-    fun weightedRandomWall(): CellType {
+    private fun weightedRandomWall(): CellType {
         val random = (0..100).random()
         return if (random in 0..70) CellType.BACKGROUND else CellType.WALL
     }
