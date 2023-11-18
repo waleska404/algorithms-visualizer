@@ -8,4 +8,5 @@
     <string name="sort_descending_icon">sort descending icon</string>
     <string name="quick_sort_title">Quick Sort</string>
     <string name="home_screen_title">Algorithms Visualization</string>
+    <string name="dijkstras_algorithm">Dijkstra\'s Algorithm</string>
 </resources>

@@ -22,7 +22,8 @@ import com.waleska404.algorithms.ui.core.components.CustomCard
 @Composable
 fun HomeScreen(
     navigateToBubbleSort: () -> Unit,
-    navigateToQuickSort: () -> Unit
+    navigateToQuickSort: () -> Unit,
+    navigateToDijkstra: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -58,6 +59,15 @@ fun HomeScreen(
             icon = R.drawable.sortdescending,
             iconDescription = R.string.sort_descending_icon,
             navigateToAlgorithm = navigateToQuickSort
+        )
+
+        // Dijkstra's algorithm
+        Algorithm(
+            title = R.string.dijkstras_algorithm,
+            //TODO: change icon
+            icon = R.drawable.sortdescending,
+            iconDescription = R.string.sort_descending_icon,
+            navigateToAlgorithm = navigateToDijkstra
         )
     }
 }
