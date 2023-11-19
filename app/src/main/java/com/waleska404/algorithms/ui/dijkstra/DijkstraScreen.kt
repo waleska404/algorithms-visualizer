@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -90,7 +93,11 @@ fun PathFindingUi(
         PathFindingGrid(grid.toLinearGrid(), onClick)
 
         Column {
-            Row {
+            Spacer(modifier = Modifier.height(30.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 Legend("Start", CELL_START)
                 Legend("Finish", CELL_FINISH)
                 Legend("Visited", CELL_VISITED)
@@ -126,9 +133,17 @@ fun Legend(
         .height(if (hasBorder) 10.dp else 16.dp)
         .background(color)
         .width(if (hasBorder) 10.dp else 16.dp)
+    Row(
+        modifier = Modifier
+            .wrapContentWidth()
+            .padding(5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Box(modifier = boxModifier)
+        Text(text = label, color = Color.Black)
+    }
 
-    Box(modifier = boxModifier)
-    Text(text = label, color = Color.Black)
 }
 
 @ExperimentalFoundationApi

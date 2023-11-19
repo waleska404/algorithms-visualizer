@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val NUMBER_OF_ROWS = 10
-const val NUMBER_OF_COLUMNS = 6
+const val NUMBER_OF_ROWS = 20
+const val NUMBER_OF_COLUMNS = 7
 
 const val GAME_DELAY_IN_MS = 10.toLong()
 
@@ -23,8 +23,10 @@ class DijkstraViewModel @Inject constructor(
     val dijkstra: DijkstraImpl
 ) : ViewModel() {
 
-    private val startPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4))
-    private val finishPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4) * 3)
+    //private val startPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4))
+    private val startPosition = Position(5, 3)
+    //private val finishPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4) * 3)
+    private val finishPosition = Position(15, 3)
 
     private var _gridState = MutableStateFlow(getInitialGrid())
     val gridState: StateFlow<DijkstraGrid> = _gridState

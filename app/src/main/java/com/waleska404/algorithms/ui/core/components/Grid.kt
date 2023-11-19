@@ -27,7 +27,7 @@ fun PathFindingGrid(
         columns = GridCells.Fixed(NUMBER_OF_COLUMNS),
         modifier = Modifier
             .padding(4.dp)
-            .border(BorderStroke(6.dp, Color.Black))
+            .border(BorderStroke(4.dp, Color.Black))
     ) {
         items(cellData) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {

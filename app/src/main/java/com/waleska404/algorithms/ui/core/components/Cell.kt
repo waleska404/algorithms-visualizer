@@ -28,7 +28,7 @@ fun Cell(cellData: CellData, onClick: (Position) -> Unit) {
     val boxModifier = Modifier
         .padding(0.dp)
         .border(BorderStroke(1.dp, Color.Gray))
-        .height(16.dp)
+        .height(30.dp)
         .background(bgColor.value)
         .fillMaxWidth()
         .clickable { onClick(cellData.position) }
