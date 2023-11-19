@@ -64,10 +64,11 @@ class DijkstraImpl {
                     emit(
                         DijkstraDomainModel(
                             finished = true,
-                            shortestPath = getShortestPathOrder(allNodes[finishIndex])
+                            shortestPath = null,
+                            unreachable = true
                         )
                     )
-                    //return visitedNodesInOrder
+                    Log.i("MYTAG", "closestCell.distance == Int.MAX_VALUE, position: ${closestCell.position}")
                 }
 
                 //TODO: emit set cell visited at position closestCell.position

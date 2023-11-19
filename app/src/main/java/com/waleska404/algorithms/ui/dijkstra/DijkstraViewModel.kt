@@ -7,6 +7,7 @@ import com.waleska404.algorithms.domain.dijkstra.DijkstraImpl
 import com.waleska404.algorithms.domain.dijkstra.Position
 import com.waleska404.algorithms.ui.core.components.CellType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,13 +26,17 @@ class DijkstraViewModel @Inject constructor(
 
     //private val startPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4))
     private val startPosition = Position(5, 3)
+
     //private val finishPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4) * 3)
     private val finishPosition = Position(15, 3)
+
+    private var walls: MutableList<Position> = fakeWalls()
 
     private var _gridState = MutableStateFlow(getInitialGrid())
     val gridState: StateFlow<DijkstraGrid> = _gridState
 
-    private var walls: MutableList<Position> = mutableListOf()
+    //private var walls: MutableList<Position> = mutableListOf()
+
 
     var isVisualizing = false
         private set
@@ -40,6 +45,19 @@ class DijkstraViewModel @Inject constructor(
         _gridState.value = getInitialGrid()
         walls = mutableListOf()
         isVisualizing = false
+    }
+
+    private fun fakeWalls(): MutableList<Position> {
+        walls = mutableListOf(
+            Position(8, 0),
+            Position(8, 1),
+            Position(8, 2),
+            Position(8, 3),
+            Position(8, 4),
+            Position(8, 5),
+            Position(8, 6),
+        )
+        return walls
     }
 
     fun randomizeWalls() {
@@ -137,6 +155,7 @@ class DijkstraViewModel @Inject constructor(
                 start = startPosition,
                 walls = walls
             ).collect { dijkstraInfo ->
+                if (dijkstraInfo.unreachable) this.cancel(null)
                 if (dijkstraInfo.finished && !dijkstraInfo.shortestPath.isNullOrEmpty()) {
                     dijkstraInfo.shortestPath.forEach {
                         Log.i("MYTAG", "shortestPath: ${it.position.row}, ${it.position.column}")
@@ -180,7 +199,7 @@ class DijkstraViewModel @Inject constructor(
         )
     }
 
-    private fun getInitialGrid() : DijkstraGrid {
+    private fun getInitialGrid(): DijkstraGrid {
         Log.i("MYTAG", "getInitialGRID: startPosition: $startPosition, finishPosition: $finishPosition")
         val mutableGrid = List(NUMBER_OF_ROWS) {
             MutableList(NUMBER_OF_COLUMNS) {
@@ -189,15 +208,20 @@ class DijkstraViewModel @Inject constructor(
         }
         for (i in 0 until NUMBER_OF_ROWS) {
             for (j in 0 until NUMBER_OF_COLUMNS) {
-                if(startPosition == Position(i, j)) {
+                if (startPosition == Position(i, j)) {
                     Log.i("MYTAG", "START POSITION: $i, $j")
                     mutableGrid[i][j] = CellData(CellType.START, Position(i, j))
-                } else if(finishPosition == Position(i, j)) {
+                } else if (finishPosition == Position(i, j)) {
                     Log.i("MYTAG", "FINISH POSITION: $i, $j")
                     mutableGrid[i][j] = CellData(CellType.FINISH, Position(i, j))
                 } else {
                     mutableGrid[i][j] = CellData(CellType.BACKGROUND, Position(i, j))
                 }
+            }
+        }
+        if (walls.isNotEmpty()) {
+            for (p in walls) {
+                mutableGrid[p.row][p.column] = CellData(CellType.WALL, Position(p.row, p.column))
             }
         }
 
