@@ -16,7 +16,7 @@ An algorithms visualizer Android app using Compose and Hilt based on modern Andr
 ## Screenshots
 <p align="center">
 <img src="/gif/home-light.gif" width="270"/>
-<img src="/gif/bubble-light.gif" width="270"/>
+<img src="/gif/dijkstra-light.gif" width="270"/>
 <img src="/gif/bubble-dark.gif" width="270"/>
 </p>
 
