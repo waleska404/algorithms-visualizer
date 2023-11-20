@@ -30,7 +30,7 @@ class DijkstraViewModel @Inject constructor(
     //private val finishPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4) * 3)
     private val finishPosition = Position(15, 3)
 
-    private var walls: MutableList<Position> = fakeWalls()
+    private var walls: MutableList<Position> = mutableListOf()
 
     private var _gridState = MutableStateFlow(getInitialGrid())
     val gridState: StateFlow<DijkstraGrid> = _gridState
@@ -42,9 +42,9 @@ class DijkstraViewModel @Inject constructor(
         private set
 
     fun clear() {
-        _gridState.value = getInitialGrid()
         walls = mutableListOf()
         isVisualizing = false
+        _gridState.value = getInitialGrid()
     }
 
     private fun fakeWalls(): MutableList<Position> {
@@ -98,6 +98,7 @@ class DijkstraViewModel @Inject constructor(
     fun toggleCellTypeToWall(p: Position) {
         if (getCellAtPosition(p).type == CellType.WALL) {
             updateCellTypeAtPosition(p, CellType.BACKGROUND)
+            walls.remove(p)
         } else {
             updateCellTypeAtPosition(p, CellType.WALL)
             walls.add(p)
