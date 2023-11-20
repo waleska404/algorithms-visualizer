@@ -43,19 +43,6 @@ class DijkstraViewModel @Inject constructor(
         _gridState.value = getInitialGrid()
     }
 
-    private fun fakeWalls(): MutableList<Position> {
-        walls = mutableListOf(
-            Position(8, 0),
-            Position(8, 1),
-            Position(8, 2),
-            Position(8, 3),
-            Position(8, 4),
-            Position(8, 5),
-            Position(8, 6),
-        )
-        return walls
-    }
-
     fun randomizeWalls() {
         clear()
         val newWalls = mutableListOf<Position>()
@@ -74,24 +61,7 @@ class DijkstraViewModel @Inject constructor(
         walls = newWalls
     }
 
-    /*
-    fun drawCurrentGridState(): List<List<CellData>> {
-        val updatedGrid = getInitGridState()
-
-        for (i in 0 until updatedGrid.size) {
-            for (j in 0 until updatedGrid[i].size) {
-                updatedGrid[i][j] = gridState[i][j]
-            }
-        }
-
-        return updatedGrid
-    }*/
-
-    fun getFinishPosition() = finishPosition
-
-    //fun getCurrentGrid(): List<List<CellData>> = gridState
-
-    fun toggleCellTypeToWall(p: Position) {
+    private fun toggleCellTypeToWall(p: Position) {
         if (getCellAtPosition(p).type == CellType.WALL) {
             updateCellTypeAtPosition(p, CellType.BACKGROUND)
             walls.remove(p)
@@ -141,11 +111,6 @@ class DijkstraViewModel @Inject constructor(
         _gridState.value = _gridState.value.copy(grid = newGrid)
     }
 
-    /*
-    fun setCellVisitedAtPosition(p: Position) {
-        gridState[p.row][p.column] = getCellAtPosition(p).copy(isVisited = true)
-    }*/
-
     fun animatedShortestPath() {
         viewModelScope.launch {
             _isVisualizing.value = true
@@ -178,28 +143,7 @@ class DijkstraViewModel @Inject constructor(
         }
     }
 
-    fun getFinishCell() = getCellAtPosition(finishPosition)
-
     private fun getCellAtPosition(p: Position) = _gridState.value.grid[p.row][p.column]
-
-    private fun getInitGridState() = getGridWithClearBackground()
-
-    private fun getGridWithClearBackground(): DijkstraGrid {
-        val mutableGrid = List(NUMBER_OF_ROWS) {
-            MutableList(NUMBER_OF_COLUMNS) {
-                CellData(CellType.BACKGROUND, Position(0, 0))
-            }
-        }
-        for (i in 0 until NUMBER_OF_ROWS) {
-            for (j in 0 until NUMBER_OF_COLUMNS) {
-                mutableGrid[i][j] = CellData(CellType.BACKGROUND, Position(i, j))
-            }
-        }
-
-        return DijkstraGrid(
-            grid = mutableGrid
-        )
-    }
 
     private fun getInitialGrid(): DijkstraGrid {
         Log.i("MYTAG", "getInitialGRID: startPosition: $startPosition, finishPosition: $finishPosition")

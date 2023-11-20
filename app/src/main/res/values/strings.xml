@@ -18,4 +18,6 @@
     <string name="broom_icon">broom icon</string>
     <string name="clear">Clear</string>
     <string name="run">Run</string>
+    <string name="target_icon">target icon</string>
+    <string name="down_arrow_icon">down arrow icon</string>
 </resources>
