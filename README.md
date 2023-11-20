@@ -1,6 +1,6 @@
 <h1 align="center">🧮 Algorithms Visualizer</h1></br>
 <p align="center">  
-An algorithms visualizer Android app using Compose and Hilt based on modern Android tech-stacks and MVVM architecture.
+An algorithms visualizer Android app using Compose and Hilt based on modern Android tech-stack and MVVM architecture.
 </p>
 </br>
 
