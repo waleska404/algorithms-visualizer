@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,12 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.waleska404.algorithms.R
-import com.waleska404.algorithms.ui.core.components.CELL_FINISH
-import com.waleska404.algorithms.ui.core.components.CELL_START
-import com.waleska404.algorithms.ui.core.components.CELL_VISITED
-import com.waleska404.algorithms.ui.core.components.CELL_WALL
 import com.waleska404.algorithms.ui.core.components.CustomIconButton
-import com.waleska404.algorithms.ui.core.components.PathFindingGrid
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -47,7 +43,9 @@ fun DijkstraScreen(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary),
     ) {
         Text(
             text = stringResource(id = R.string.dijkstras_algorithm),
@@ -55,20 +53,20 @@ fun DijkstraScreen(
             fontSize = 22.sp,
             color = MaterialTheme.colorScheme.secondary
         )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.weight(1f))
         PathFindingGrid(
             cellData = currentGridState.toLinearGrid(),
             onClick = viewModel::onCellClicked
         )
-        Spacer(modifier = Modifier.height(10.dp))
         Legend()
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.weight(1f))
         BottomButtons(
             onVisualize = { viewModel.animatedShortestPath() },
             onRandomizeWalls = { viewModel.randomizeWalls() },
             onClear = { viewModel.clear() },
             isVisualizing = isVisualizing
         )
+        Spacer(modifier = Modifier.weight(0.5f))
     }
 }
 
@@ -110,6 +108,7 @@ fun BottomButtons(
     }
 }
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Legend() {
@@ -120,7 +119,7 @@ fun Legend() {
         LegendItem(stringResource(id = R.string.start), CELL_START)
         LegendItem(stringResource(id = R.string.finish), CELL_FINISH)
         LegendItem(stringResource(id = R.string.visited), CELL_VISITED)
-        LegendItem(stringResource(id = R.string.wall), CELL_WALL)
+        LegendItem(stringResource(id = R.string.wall), MaterialTheme.colorScheme.secondary)
     }
 }
 
@@ -146,8 +145,7 @@ fun LegendItem(
         horizontalArrangement = Arrangement.Center
     ) {
         Box(modifier = boxModifier)
-        Text(text = label, color = Color.Black)
+        Text(text = label, color = MaterialTheme.colorScheme.secondary)
     }
 
 }
-

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.dijkstra.DijkstraImpl
 import com.waleska404.algorithms.domain.dijkstra.Position
-import com.waleska404.algorithms.ui.core.components.CellType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -14,8 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val NUMBER_OF_ROWS = 20
-const val NUMBER_OF_COLUMNS = 7
+const val NUMBER_OF_ROWS = 16
+const val NUMBER_OF_COLUMNS = 9
 
 const val GAME_DELAY_IN_MS = 10.toLong()
 
@@ -25,10 +24,10 @@ class DijkstraViewModel @Inject constructor(
 ) : ViewModel() {
 
     //private val startPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4))
-    private val startPosition = Position(5, 3)
+    private val startPosition = Position(1, 4)
 
     //private val finishPosition = Position((NUMBER_OF_ROWS / 2), (NUMBER_OF_COLUMNS / 4) * 3)
-    private val finishPosition = Position(15, 3)
+    private val finishPosition = Position(14, 4)
 
     private var walls: MutableList<Position> = mutableListOf()
 
