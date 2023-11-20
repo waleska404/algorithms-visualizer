@@ -35,15 +35,12 @@ class DijkstraViewModel @Inject constructor(
     private var _gridState = MutableStateFlow(getInitialGrid())
     val gridState: StateFlow<DijkstraGrid> = _gridState
 
-    //private var walls: MutableList<Position> = mutableListOf()
-
-
-    var isVisualizing = false
-        private set
+    private var _isVisualizing = MutableStateFlow(false)
+    val isVisualizing: StateFlow<Boolean> = _isVisualizing
 
     fun clear() {
         walls = mutableListOf()
-        isVisualizing = false
+        _isVisualizing.value = false
         _gridState.value = getInitialGrid()
     }
 
@@ -105,10 +102,15 @@ class DijkstraViewModel @Inject constructor(
         }
     }
 
-    fun isPositionNotAtStartOrFinish(p: Position) =
+    private fun isPositionNotAtStartOrFinish(p: Position) =
         getCellAtPosition(p).type != CellType.START &&
                 getCellAtPosition(p).type != CellType.FINISH
 
+    fun onCellClicked(p: Position) {
+        if (isPositionNotAtStartOrFinish(p) && !isVisualizing.value) {
+            toggleCellTypeToWall(p)
+        }
+    }
 
     private fun updateCellTypeAtPosition(position: Position, cellType: CellType) {
         val i = position.row
@@ -147,7 +149,7 @@ class DijkstraViewModel @Inject constructor(
 
     fun animatedShortestPath() {
         viewModelScope.launch {
-            isVisualizing = true
+            _isVisualizing.value = true
             val shortestPath = dijkstra.animatedDijkstra(
                 gridSize = NUMBER_OF_ROWS * NUMBER_OF_COLUMNS,
                 row = NUMBER_OF_ROWS,

@@ -14,27 +14,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.waleska404.algorithms.R
-import com.waleska404.algorithms.domain.dijkstra.Position
 import com.waleska404.algorithms.ui.core.components.CELL_FINISH
 import com.waleska404.algorithms.ui.core.components.CELL_START
 import com.waleska404.algorithms.ui.core.components.CELL_VISITED
 import com.waleska404.algorithms.ui.core.components.CELL_WALL
 import com.waleska404.algorithms.ui.core.components.CustomIconButton
 import com.waleska404.algorithms.ui.core.components.PathFindingGrid
-import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -43,86 +42,92 @@ fun DijkstraScreen(
     navigateToHome: () -> Unit,
     viewModel: DijkstraViewModel = hiltViewModel(),
 ) {
-    //val currentGridState = remember { mutableStateOf(state.drawCurrentGridState()) }
     val currentGridState: DijkstraGrid by viewModel.gridState.collectAsState()
+    val isVisualizing: Boolean by viewModel.isVisualizing.collectAsState()
 
-    val onCellClicked = { p: Position ->
-        if (viewModel.isPositionNotAtStartOrFinish(p) && !viewModel.isVisualizing) {
-            viewModel.toggleCellTypeToWall(p)
-            //currentGridState.value = viewModel.drawCurrentGridState()
-        }
-    }
-
-    PathFindingUi(
-        grid = currentGridState,
-        onClick = onCellClicked,
-        onVisualize = {
-            viewModel.animatedShortestPath()
-        },
-        onRandomizeWalls = {
-            viewModel.randomizeWalls()
-        },
-        onClear = {
-            viewModel.clear()
-        }
-    )
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(GAME_DELAY_IN_MS)
-            //currentGridState.value = viewModel.drawCurrentGridState()
-        }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = stringResource(id = R.string.dijkstras_algorithm),
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        PathFindingGrid(
+            cellData = currentGridState.toLinearGrid(),
+            onClick = viewModel::onCellClicked
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Legend()
+        Spacer(modifier = Modifier.height(10.dp))
+        BottomButtons(
+            onVisualize = { viewModel.animatedShortestPath() },
+            onRandomizeWalls = { viewModel.randomizeWalls() },
+            onClear = { viewModel.clear() },
+            isVisualizing = isVisualizing
+        )
     }
 }
 
-@ExperimentalFoundationApi
+
 @Composable
-fun PathFindingUi(
-    grid: DijkstraGrid,
-    onClick: (Position) -> Unit,
+fun BottomButtons(
     onVisualize: () -> Unit,
     onRandomizeWalls: () -> Unit,
     onClear: () -> Unit,
+    isVisualizing: Boolean,
 ) {
-    val isVisualizeEnabled = remember { mutableStateOf(true) }
-
-    Column(
-        modifier = Modifier.padding(8.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
     ) {
-        PathFindingGrid(grid.toLinearGrid(), onClick)
-
-        Column {
-            Spacer(modifier = Modifier.height(30.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Legend("Start", CELL_START)
-                Legend("Finish", CELL_FINISH)
-                Legend("Visited", CELL_VISITED)
-                Legend("Wall", CELL_WALL)
-            }
-            Row {
-                VisualizeButton(
-                    modifier = Modifier.padding(start = 16.dp),
-                    onClick = onVisualize,
-                    enabled = isVisualizeEnabled.value
-                )
-                RandomWallsButton(
-                    modifier = Modifier.padding(start = 16.dp),
-                    onClick = onRandomizeWalls,
-                    enabled = isVisualizeEnabled.value
-                )
-                ClearButton(modifier = Modifier.padding(horizontal = 16.dp), onClick = onClear)
-            }
-        }
+        CustomIconButton(
+            modifier = Modifier.padding(start = 7.dp),
+            onClick = onVisualize,
+            text = stringResource(id = R.string.run),
+            enabled = !isVisualizing,
+            iconResource = R.drawable.sort,
+            iconDescriptionResource = R.string.sort_icon,
+        )
+        CustomIconButton(
+            modifier = Modifier.padding(start = 7.dp),
+            onClick = onRandomizeWalls,
+            text = stringResource(id = R.string.walls),
+            enabled = !isVisualizing,
+            iconResource = R.drawable.shuffle,
+            iconDescriptionResource = R.string.random,
+        )
+        CustomIconButton(
+            modifier = Modifier.padding(horizontal = 7.dp),
+            onClick = onClear,
+            text = stringResource(id = R.string.clear),
+            iconResource = R.drawable.broom,
+            iconDescriptionResource = R.string.broom_icon,
+        )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun Legend() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        LegendItem(stringResource(id = R.string.start), CELL_START)
+        LegendItem(stringResource(id = R.string.finish), CELL_FINISH)
+        LegendItem(stringResource(id = R.string.visited), CELL_VISITED)
+        LegendItem(stringResource(id = R.string.wall), CELL_WALL)
+    }
+}
+
+
 @ExperimentalFoundationApi
 @Composable
-fun Legend(
+fun LegendItem(
     label: String,
     color: Color,
     hasBorder: Boolean = false
@@ -146,44 +151,3 @@ fun Legend(
 
 }
 
-@ExperimentalFoundationApi
-@Composable
-fun VisualizeButton(modifier: Modifier = Modifier, onClick: () -> (Unit), enabled: Boolean = true) {
-    CustomIconButton(
-        modifier,
-        onClick = onClick,
-        text = "Vis",
-        enabled = enabled,
-        iconResource = R.drawable.sort,
-        iconDescriptionResource = R.string.sort_icon,
-    )
-}
-
-@ExperimentalFoundationApi
-@Composable
-fun ClearButton(modifier: Modifier = Modifier, onClick: () -> (Unit)) {
-    CustomIconButton(
-        modifier,
-        onClick = onClick,
-        text = "Clear",
-        iconResource = R.drawable.sortdescending,
-        iconDescriptionResource = R.string.sort_icon,
-    )
-}
-
-@ExperimentalFoundationApi
-@Composable
-fun RandomWallsButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> (Unit),
-    enabled: Boolean = true
-) {
-    CustomIconButton(
-        modifier,
-        onClick = onClick,
-        text = "Walls",
-        enabled = enabled,
-        iconResource = R.drawable.shuffle,
-        iconDescriptionResource = R.string.random,
-    )
-}

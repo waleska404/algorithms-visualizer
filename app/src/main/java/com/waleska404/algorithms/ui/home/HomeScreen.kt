@@ -65,7 +65,7 @@ fun HomeScreen(
         Algorithm(
             title = R.string.dijkstras_algorithm,
             //TODO: change icon
-            icon = R.drawable.sortdescending,
+            icon = R.drawable.route,
             iconDescription = R.string.sort_descending_icon,
             navigateToAlgorithm = navigateToDijkstra
         )

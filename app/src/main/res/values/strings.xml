@@ -6,7 +6,16 @@
     <string name="random">Random</string>
     <string name="sort">Sort</string>
     <string name="sort_descending_icon">sort descending icon</string>
+    <string name="route_icon">route icon</string>
     <string name="quick_sort_title">Quick Sort</string>
     <string name="home_screen_title">Algorithms Visualization</string>
     <string name="dijkstras_algorithm">Dijkstra\'s Algorithm</string>
+    <string name="start">Start</string>
+    <string name="finish">Finish</string>
+    <string name="visited">Visited</string>
+    <string name="wall">Wall</string>
+    <string name="walls">Walls</string>
+    <string name="broom_icon">broom icon</string>
+    <string name="clear">Clear</string>
+    <string name="run">Run</string>
 </resources>

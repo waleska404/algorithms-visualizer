@@ -51,7 +51,7 @@ fun CustomIconButton(
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Bottom
         ) {
             Box(
                 modifier = Modifier.size(30.dp),

@@ -6,15 +6,8 @@ import com.waleska404.algorithms.ui.core.components.CellType
 data class DijkstraGrid(
     val grid: List<List<CellData>>
 ) {
-    fun toLinearGrid(): MutableList<CellData> {
-        val mutableList = mutableListOf<CellData>()
-        for (i in this.grid.indices) {
-            for (j in this.grid[i].indices) {
-                mutableList.add(this.grid[i][j])
-            }
-        }
-        return mutableList
-    }
+    fun toLinearGrid(): MutableList<CellData> =
+        grid.flatten().toMutableList()
 }
 
 data class CellData(
