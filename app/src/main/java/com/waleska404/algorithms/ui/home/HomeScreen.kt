@@ -37,11 +37,12 @@ fun HomeScreen(
         Text(
             text = stringResource(id = R.string.home_screen_title),
             fontWeight = FontWeight.Bold,
-            fontSize = 60.sp,
+            fontSize = 40.sp,
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.padding(8.dp),
-            lineHeight = 60.sp,
-            textAlign = TextAlign.Center
+            lineHeight = 40.sp,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
         )
         Spacer(modifier = Modifier.height(15.dp))
 
