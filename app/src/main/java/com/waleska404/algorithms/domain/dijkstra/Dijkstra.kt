@@ -1,5 +1,14 @@
 package com.waleska404.algorithms.domain.dijkstra
 
-interface Dijkstra {
-}
+import kotlinx.coroutines.flow.Flow
 
+interface Dijkstra {
+    suspend fun animatedDijkstra(
+    gridSize: Int,
+    row: Int,
+    col: Int,
+    start: Position,
+    finish: Position,
+    walls: List<Position>
+    ): Flow<DijkstraDomainModel>
+}

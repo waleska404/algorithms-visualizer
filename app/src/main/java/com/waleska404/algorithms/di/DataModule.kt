@@ -2,6 +2,7 @@ package com.waleska404.algorithms.di
 
 import com.waleska404.algorithms.domain.bubblesort.BubbleSort
 import com.waleska404.algorithms.domain.bubblesort.BubbleSortImpl
+import com.waleska404.algorithms.domain.dijkstra.Dijkstra
 import com.waleska404.algorithms.domain.dijkstra.DijkstraImpl
 import com.waleska404.algorithms.domain.quicksort.QuickSort
 import com.waleska404.algorithms.domain.quicksort.QuickSortImpl
@@ -25,6 +26,6 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun providesDijkstra(): DijkstraImpl = DijkstraImpl()
+    fun providesDijkstra(): Dijkstra = DijkstraImpl()
 
 }

@@ -22,4 +22,5 @@ val DisabledColorLight = Color(0xFF8A93A7)
 // shared
 val AccentGreen = Color(0xFF00FF00)
 val AccentRed = Color(0xFFFF0000)
+val AccentYellow = Color(0xFFFFFF00)
 

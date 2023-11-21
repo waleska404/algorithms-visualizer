@@ -17,7 +17,6 @@ data class CellDomainData(
     var type: CellType,
     val position: Position,
     val isVisited: Boolean = false,
-    val isShortestPath: Boolean = false,
     var distance: Int = Int.MAX_VALUE,
     var previousShortestCell: CellDomainData? = null,
 )

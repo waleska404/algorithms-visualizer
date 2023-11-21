@@ -61,7 +61,7 @@ fun Cell(cellData: CellData, onClick: (Position) -> Unit) {
 
 @Composable
 private fun getBackgroundByType(cellData: CellData): Color {
-    if (cellData.isShortestPath && cellData.type != CellType.START && cellData.type != CellType.FINISH) return CELL_PATH
+    if (cellData.isShortestPath && cellData.type != CellType.START && cellData.type != CellType.FINISH) return MaterialTheme.colorScheme.inverseSurface
     if (cellData.isVisited && cellData.type != CellType.START && cellData.type != CellType.FINISH) return MaterialTheme.colorScheme.onSecondary
 
     return when (cellData.type) {
@@ -78,7 +78,3 @@ enum class CellType {
     WALL,
     BACKGROUND,
 }
-
-//val CELL_START = Color.Red
-//val CELL_FINISH = Color.Green
-val CELL_PATH = Color.Yellow

@@ -1,6 +1,5 @@
 package com.waleska404.algorithms.domain.dijkstra
 
-import android.util.Log
 import com.waleska404.algorithms.domain.utils.findIndexByCell
 import com.waleska404.algorithms.domain.utils.isAtPosition
 import com.waleska404.algorithms.domain.utils.shift
@@ -10,9 +9,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlin.math.floor
 
-class DijkstraImpl {
+class DijkstraImpl: Dijkstra {
 
-    suspend fun animatedDijkstra(
+    override suspend fun animatedDijkstra(
         gridSize: Int,
         row: Int,
         col: Int,
@@ -20,13 +19,11 @@ class DijkstraImpl {
         finish: Position,
         walls: List<Position>
     ): Flow<DijkstraDomainModel> {
-        Log.i("MYTAG", "gridSize: $gridSize, row: $row, col: $col, start: $start, finish: $finish")
         return flow {
+            // set up initial variables
             val visitedNodesInOrder = mutableListOf<CellDomainData>()
-
             val startIndex = getIndexFromPosition(start, col)
             val finishIndex = getIndexFromPosition(finish, col)
-
             val unvisitedNodes = MutableList(gridSize) {
                 CellDomainData(
                     id = it,
@@ -42,7 +39,6 @@ class DijkstraImpl {
             unvisitedNodes[finishIndex] = unvisitedNodes[finishIndex].copy(
                 type = CellType.FINISH
             )
-            Log.i("MYTAG", "FINISH POSITION: $finish, FINISH INDEX: $finishIndex")
             walls.forEach {
                 val index = getIndexFromPosition(it, col)
                 unvisitedNodes[index] = unvisitedNodes[index].copy(
@@ -51,16 +47,16 @@ class DijkstraImpl {
             }
             val allNodes = unvisitedNodes.toMutableList()
 
-
+            // main loop
             while (unvisitedNodes.isNotEmpty()) {
                 sortNodesByDistance(unvisitedNodes)
-
                 val closestCell = unvisitedNodes.shift()
-                if (closestCell.type == CellType.WALL) {
-                    continue
-                }
+
+                // wall case
+                if (closestCell.type == CellType.WALL) continue
+
+                // target not reachable case
                 if (closestCell.distance == Int.MAX_VALUE) {
-                    //TODO: emit return shortest path
                     emit(
                         DijkstraDomainModel(
                             finished = true,
@@ -68,10 +64,9 @@ class DijkstraImpl {
                             unreachable = true
                         )
                     )
-                    Log.i("MYTAG", "closestCell.distance == Int.MAX_VALUE, position: ${closestCell.position}")
                 }
 
-                //TODO: emit set cell visited at position closestCell.position
+                // background case
                 if(closestCell.type != CellType.WALL) {
                     emit(
                         DijkstraDomainModel(
@@ -82,21 +77,23 @@ class DijkstraImpl {
                         )
                     )
                 }
-                //gridState.setCellVisitedAtPosition(closestCell.position)
+
+                // update allNodes list
                 allNodes[closestCell.id] = closestCell.copy(isVisited = true)
+                // update visitedNodes list
                 visitedNodesInOrder.add(allNodes[closestCell.id])
 
-
+                // target reached case
                 if (closestCell.isAtPosition(finish)) {
-                    //TODO: emit return shortest path
                     emit(
                         DijkstraDomainModel(
                             finished = true,
                             shortestPath = getShortestPathOrder(allNodes[finishIndex])
                         )
                     )
-                    //return visitedNodesInOrder
                 }
+
+                // update neighbors
                 updateUnvisitedNeighbors(
                     cell = closestCell,
                     allNodes = allNodes,
@@ -104,17 +101,16 @@ class DijkstraImpl {
                     row = row,
                     col = col
                 )
-
+                // TODO: poner esta variable en un sitio más core, un config comun a todas las capas o algo
+                // o del domain puede venir al ui????? igual si
                 delay(GAME_DELAY_IN_MS)
             }
-            //TODO: emit return shortest path
             emit(
                 DijkstraDomainModel(
                     finished = true,
                     shortestPath = getShortestPathOrder(allNodes[finishIndex])
                 )
             )
-            //return visitedNodesInOrder
         }
     }
 
@@ -151,12 +147,9 @@ class DijkstraImpl {
         col: Int
     ) {
         val unvisitedNeighbors = getUnvisitedNeighbors(cell, allNodes, row, col)
-
         for (neighbor in unvisitedNeighbors) {
             val index = unvisitedNodes.findIndexByCell(neighbor)
-
             if (index != -1) {
-                //PETA
                 unvisitedNodes[index].distance = cell.distance + 1
                 unvisitedNodes[index].previousShortestCell = cell
             }
