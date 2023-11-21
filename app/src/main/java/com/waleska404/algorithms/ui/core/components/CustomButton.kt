@@ -2,9 +2,12 @@ package com.waleska404.algorithms.ui.core.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -47,14 +50,17 @@ fun CustomIconButton(
             contentColor = contentColor,
             disabledContainerColor = disabledContainerColor,
             disabledContentColor = disabledContentColor,
+        ),
+        contentPadding = PaddingValues(
+            0.dp
         )
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.Bottom
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(20.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -63,9 +69,10 @@ fun CustomIconButton(
                     tint = iconTint,
                 )
             }
+            Spacer(Modifier.width(3.dp))
             Text(
                 text = text,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 textAlign = TextAlign.Center
             )
         }

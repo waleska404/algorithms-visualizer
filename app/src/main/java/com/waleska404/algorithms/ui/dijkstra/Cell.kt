@@ -30,7 +30,7 @@ fun Cell(cellData: CellData, onClick: (Position) -> Unit) {
     )
 
     val boxModifier = Modifier
-        .padding(0.dp)
+        //.padding(0.dp)
         .border(
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
         )

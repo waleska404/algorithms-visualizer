@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //TODO: check best practice to do this
-const val NUMBER_OF_ROWS = 16
+const val NUMBER_OF_ROWS = 15
 const val NUMBER_OF_COLUMNS = 9
 
 const val GAME_DELAY_IN_MS = 10.toLong()

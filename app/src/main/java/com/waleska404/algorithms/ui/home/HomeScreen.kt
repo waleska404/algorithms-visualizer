@@ -47,7 +47,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(15.dp))
 
         // bubble sort
-        Algorithm(
+        AlgorithmListItem(
             title = R.string.bubble_sort_title,
             icon = R.drawable.sortdescending,
             iconDescription = R.string.sort_descending_icon,
@@ -55,7 +55,7 @@ fun HomeScreen(
         )
 
         // quick sort
-        Algorithm(
+        AlgorithmListItem(
             title = R.string.quick_sort_title,
             icon = R.drawable.sortdescending,
             iconDescription = R.string.sort_descending_icon,
@@ -63,7 +63,7 @@ fun HomeScreen(
         )
 
         // Dijkstra's algorithm
-        Algorithm(
+        AlgorithmListItem(
             title = R.string.dijkstras_algorithm,
             //TODO: change icon
             icon = R.drawable.route,
@@ -74,7 +74,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun Algorithm(
+fun AlgorithmListItem(
     title: Int,
     icon: Int,
     iconDescription: Int,

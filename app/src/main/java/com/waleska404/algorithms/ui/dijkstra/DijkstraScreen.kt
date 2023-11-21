@@ -44,6 +44,7 @@ fun DijkstraScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
+            .padding(horizontal = 18.dp)
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary),
     ) {
@@ -53,13 +54,14 @@ fun DijkstraScreen(
             fontSize = 22.sp,
             color = MaterialTheme.colorScheme.secondary
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(0.3f))
         PathFindingGrid(
             cellData = currentGridState.toLinearGrid(),
-            onClick = viewModel::onCellClicked
+            onClick = viewModel::onCellClicked,
+            modifier = Modifier.weight(20f)
         )
         Legend()
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(0.5f))
         BottomButtons(
             onVisualize = { viewModel.animatedShortestPath() },
             onRandomizeWalls = { viewModel.randomizeWalls() },
@@ -79,11 +81,12 @@ fun BottomButtons(
     isVisualizing: Boolean,
 ) {
     Row(
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
         CustomIconButton(
-            modifier = Modifier.padding(start = 7.dp),
+            modifier = Modifier.padding(start = 7.dp).weight(0.8f),
             onClick = onRandomizeWalls,
             text = stringResource(id = R.string.walls),
             enabled = !isVisualizing,
@@ -91,14 +94,14 @@ fun BottomButtons(
             iconDescriptionResource = R.string.random,
         )
         CustomIconButton(
-            modifier = Modifier.padding(horizontal = 7.dp),
+            modifier = Modifier.padding(horizontal = 7.dp).weight(0.8f),
             onClick = onClear,
             text = stringResource(id = R.string.clear),
-            iconResource = R.drawable.broom,
+            iconResource = R.drawable.shines,
             iconDescriptionResource = R.string.broom_icon,
         )
         CustomIconButton(
-            modifier = Modifier.padding(start = 7.dp),
+            modifier = Modifier.padding(start = 7.dp).weight(1f),
             onClick = onVisualize,
             text = stringResource(id = R.string.run),
             enabled = !isVisualizing,

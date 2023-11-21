@@ -46,7 +46,7 @@ fun CustomCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(55.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
