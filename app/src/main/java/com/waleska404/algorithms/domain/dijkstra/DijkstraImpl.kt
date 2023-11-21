@@ -11,7 +11,7 @@ import kotlin.math.floor
 
 class DijkstraImpl: Dijkstra {
 
-    override suspend fun animatedDijkstra(
+    override suspend fun runDijkstra(
         gridSize: Int,
         row: Int,
         col: Int,

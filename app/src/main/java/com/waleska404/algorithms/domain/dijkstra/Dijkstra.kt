@@ -3,7 +3,7 @@ package com.waleska404.algorithms.domain.dijkstra
 import kotlinx.coroutines.flow.Flow
 
 interface Dijkstra {
-    suspend fun animatedDijkstra(
+    suspend fun runDijkstra(
     gridSize: Int,
     row: Int,
     col: Int,

@@ -84,14 +84,6 @@ fun BottomButtons(
     ) {
         CustomIconButton(
             modifier = Modifier.padding(start = 7.dp),
-            onClick = onVisualize,
-            text = stringResource(id = R.string.run),
-            enabled = !isVisualizing,
-            iconResource = R.drawable.sort,
-            iconDescriptionResource = R.string.sort_icon,
-        )
-        CustomIconButton(
-            modifier = Modifier.padding(start = 7.dp),
             onClick = onRandomizeWalls,
             text = stringResource(id = R.string.walls),
             enabled = !isVisualizing,
@@ -104,6 +96,15 @@ fun BottomButtons(
             text = stringResource(id = R.string.clear),
             iconResource = R.drawable.broom,
             iconDescriptionResource = R.string.broom_icon,
+        )
+        CustomIconButton(
+            modifier = Modifier.padding(start = 7.dp),
+            onClick = onVisualize,
+            text = stringResource(id = R.string.run),
+            enabled = !isVisualizing,
+            iconResource = R.drawable.sort,
+            iconDescriptionResource = R.string.sort_icon,
+            containerColor = MaterialTheme.colorScheme.onSecondary
         )
     }
 }

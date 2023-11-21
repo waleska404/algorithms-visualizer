@@ -112,7 +112,7 @@ class DijkstraViewModel @Inject constructor(
     fun animatedShortestPath() {
         viewModelScope.launch {
             _isVisualizing.value = true
-            dijkstra.animatedDijkstra(
+            dijkstra.runDijkstra(
                 gridSize = NUMBER_OF_ROWS * NUMBER_OF_COLUMNS,
                 row = NUMBER_OF_ROWS,
                 col = NUMBER_OF_COLUMNS,
@@ -127,6 +127,7 @@ class DijkstraViewModel @Inject constructor(
                         updateCellIsShortestPathAtPosition(p, true)
                         delay(GAME_DELAY_IN_MS)
                     }
+                    this.cancel(null)
                 } else if (dijkstraInfo.position != null) {
                     updateCellIsVisitedAtPosition(dijkstraInfo.position, true)
                 }
