@@ -51,7 +51,6 @@ fun BubbleSortScreen(
     sortViewModel: BubbleSortViewModel = hiltViewModel(),
     navigateToHome: () -> Boolean,
 ) {
-    // TODO: navigate to home icon
     val listToSort: BubbleSortList by sortViewModel.listToSort.collectAsState()
     val isSorting: Boolean by sortViewModel.isSorting.collectAsState()
 

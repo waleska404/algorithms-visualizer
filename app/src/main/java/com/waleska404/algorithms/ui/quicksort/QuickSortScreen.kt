@@ -52,7 +52,6 @@ fun QuickSortScreen(
     sortViewModel: QuickSortViewModel = hiltViewModel(),
     navigateToHome: () -> Boolean,
 ) {
-    //TODO: navigate to home icon
     val listToSort: QuickSortList by sortViewModel.listToSort.collectAsState()
     val isSorting: Boolean by sortViewModel.isSorting.collectAsState()
 
