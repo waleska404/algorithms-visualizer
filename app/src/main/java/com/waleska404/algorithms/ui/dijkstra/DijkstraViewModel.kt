@@ -4,6 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.dijkstra.Dijkstra
 import com.waleska404.algorithms.domain.dijkstra.Position
+import com.waleska404.algorithms.ui.core.config.FINISH_POSITION_COLUMN
+import com.waleska404.algorithms.ui.core.config.FINISH_POSITION_ROW
+import com.waleska404.algorithms.ui.core.config.GAME_DELAY_IN_MS
+import com.waleska404.algorithms.ui.core.config.NUMBER_OF_COLUMNS
+import com.waleska404.algorithms.ui.core.config.NUMBER_OF_ROWS
+import com.waleska404.algorithms.ui.core.config.START_POSITION_COLUMN
+import com.waleska404.algorithms.ui.core.config.START_POSITION_ROW
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -12,20 +19,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//TODO: check best practice to do this
-const val NUMBER_OF_ROWS = 15
-const val NUMBER_OF_COLUMNS = 9
-
-const val GAME_DELAY_IN_MS = 10.toLong()
 
 @HiltViewModel
 class DijkstraViewModel @Inject constructor(
     val dijkstra: Dijkstra
 ) : ViewModel() {
 
-    //TODO: check best practice to do this
-    private val startPosition = Position(1, 4)
-    private val finishPosition = Position(14, 4)
+    private val startPosition = Position(START_POSITION_ROW, START_POSITION_COLUMN)
+    private val finishPosition = Position(FINISH_POSITION_ROW, FINISH_POSITION_COLUMN)
 
     private var walls: MutableList<Position> = mutableListOf()
 
@@ -118,7 +119,8 @@ class DijkstraViewModel @Inject constructor(
                 col = NUMBER_OF_COLUMNS,
                 finish = finishPosition,
                 start = startPosition,
-                walls = walls
+                walls = walls,
+                delayInMs = GAME_DELAY_IN_MS
             ).collect { dijkstraInfo ->
                 if (dijkstraInfo.unreachable) this.cancel(null)
                 if (dijkstraInfo.finished && !dijkstraInfo.shortestPath.isNullOrEmpty()) {

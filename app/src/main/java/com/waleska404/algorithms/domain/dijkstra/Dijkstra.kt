@@ -9,6 +9,7 @@ interface Dijkstra {
     col: Int,
     start: Position,
     finish: Position,
-    walls: List<Position>
+    walls: List<Position>,
+    delayInMs: Long
     ): Flow<DijkstraDomainModel>
 }

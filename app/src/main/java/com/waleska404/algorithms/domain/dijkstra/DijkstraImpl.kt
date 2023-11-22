@@ -3,7 +3,6 @@ package com.waleska404.algorithms.domain.dijkstra
 import com.waleska404.algorithms.domain.utils.findIndexByCell
 import com.waleska404.algorithms.domain.utils.isAtPosition
 import com.waleska404.algorithms.domain.utils.shift
-import com.waleska404.algorithms.ui.dijkstra.GAME_DELAY_IN_MS
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -17,7 +16,8 @@ class DijkstraImpl: Dijkstra {
         col: Int,
         start: Position,
         finish: Position,
-        walls: List<Position>
+        walls: List<Position>,
+        delayInMs: Long
     ): Flow<DijkstraDomainModel> {
         return flow {
             // set up initial variables
@@ -101,9 +101,7 @@ class DijkstraImpl: Dijkstra {
                     row = row,
                     col = col
                 )
-                // TODO: poner esta variable en un sitio más core, un config comun a todas las capas o algo
-                // o del domain puede venir al ui????? igual si
-                delay(GAME_DELAY_IN_MS)
+                delay(delayInMs)
             }
             emit(
                 DijkstraDomainModel(

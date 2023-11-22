@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.waleska404.algorithms.domain.dijkstra.Position
+import com.waleska404.algorithms.ui.core.config.NUMBER_OF_COLUMNS
 
 @ExperimentalFoundationApi
 @Composable
