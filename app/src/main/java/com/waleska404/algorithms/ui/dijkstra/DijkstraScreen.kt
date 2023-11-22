@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -48,17 +49,18 @@ fun DijkstraScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary),
     ) {
+        Spacer(modifier = Modifier.weight(0.3f))
         Text(
             text = stringResource(id = R.string.dijkstras_algorithm),
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             color = MaterialTheme.colorScheme.secondary
         )
-        Spacer(modifier = Modifier.weight(0.3f))
+        Spacer(modifier = Modifier.weight(0.5f))
         PathFindingGrid(
             cellData = currentGridState.toLinearGrid(),
             onClick = viewModel::onCellClicked,
-            modifier = Modifier.weight(20f)
+            modifier = Modifier.wrapContentSize()
         )
         Legend()
         Spacer(modifier = Modifier.weight(0.5f))
@@ -68,7 +70,7 @@ fun DijkstraScreen(
             onClear = { viewModel.clear() },
             isVisualizing = isVisualizing
         )
-        Spacer(modifier = Modifier.weight(0.5f))
+        Spacer(modifier = Modifier.weight(0.3f))
     }
 }
 
