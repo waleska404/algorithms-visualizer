@@ -25,18 +25,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.waleska404.algorithms.R
 import com.waleska404.algorithms.ui.core.components.CustomIconButton
+import com.waleska404.algorithms.ui.core.components.CustomTopAppBar
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DijkstraScreen(
-    navigateToHome: () -> Unit,
+    navigateToHome: () -> Boolean,
     viewModel: DijkstraViewModel = hiltViewModel(),
 ) {
     val currentGridState: DijkstraGrid by viewModel.gridState.collectAsState()
@@ -45,22 +44,15 @@ fun DijkstraScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(horizontal = 18.dp)
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary),
     ) {
-        Spacer(modifier = Modifier.weight(0.3f))
-        Text(
-            text = stringResource(id = R.string.dijkstras_algorithm),
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.secondary
-        )
+        CustomTopAppBar(navigateToHome = navigateToHome, title = R.string.dijkstras_algorithm)
         Spacer(modifier = Modifier.weight(0.5f))
         PathFindingGrid(
             cellData = currentGridState.toLinearGrid(),
             onClick = viewModel::onCellClicked,
-            modifier = Modifier.wrapContentSize()
+            modifier = Modifier.wrapContentSize().padding(horizontal = 18.dp)
         )
         Legend()
         Spacer(modifier = Modifier.weight(0.5f))
@@ -83,12 +75,14 @@ fun BottomButtons(
     isVisualizing: Boolean,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
         CustomIconButton(
-            modifier = Modifier.padding(start = 7.dp).weight(0.8f),
+            modifier = Modifier
+                .padding(start = 7.dp)
+                .weight(0.8f),
             onClick = onRandomizeWalls,
             text = stringResource(id = R.string.walls),
             enabled = !isVisualizing,
@@ -96,14 +90,18 @@ fun BottomButtons(
             iconDescriptionResource = R.string.random,
         )
         CustomIconButton(
-            modifier = Modifier.padding(horizontal = 7.dp).weight(0.8f),
+            modifier = Modifier
+                .padding(horizontal = 7.dp)
+                .weight(0.8f),
             onClick = onClear,
             text = stringResource(id = R.string.clear),
             iconResource = R.drawable.shines,
             iconDescriptionResource = R.string.broom_icon,
         )
         CustomIconButton(
-            modifier = Modifier.padding(start = 7.dp).weight(1f),
+            modifier = Modifier
+                .padding(start = 7.dp)
+                .weight(1f),
             onClick = onVisualize,
             text = stringResource(id = R.string.run),
             enabled = !isVisualizing,

@@ -21,4 +21,5 @@
     <string name="run">Run</string>
     <string name="target_icon">target icon</string>
     <string name="down_arrow_icon">down arrow icon</string>
+    <string name="left_arrow_icon">left arrow icon</string>
 </resources>
