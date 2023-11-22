@@ -45,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.waleska404.algorithms.R
 import com.waleska404.algorithms.ui.core.components.CustomIconButton
 import com.waleska404.algorithms.ui.core.components.CustomSlider
+import com.waleska404.algorithms.ui.core.components.CustomTopAppBar
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -61,11 +62,9 @@ fun QuickSortScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary),
     ) {
-        Text(
-            text = stringResource(id = R.string.quick_sort_title),
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.secondary
+        CustomTopAppBar(
+            navigateToHome = navigateToHome,
+            title = R.string.quick_sort_title,
         )
         Spacer(modifier = Modifier.height(10.dp))
         SortingList(
@@ -160,7 +159,7 @@ fun QuickSortItem(
                 .border(borderStroke, RoundedCornerShape(15.dp))
         )
         ItemTextValue(value = item.value)
-        if(item.inSortingRange && isSorting) {
+        if (item.inSortingRange && isSorting) {
             Box(
                 modifier = Modifier
                     .width(40.dp)
