@@ -3,6 +3,7 @@ package com.waleska404.algorithms.ui.quicksort
 import com.waleska404.algorithms.domain.quicksort.QuickSort
 import com.waleska404.algorithms.domain.quicksort.QuickSortDomainModel
 import com.waleska404.algorithms.testrules.CoroutinesTestRule
+import com.waleska404.algorithms.testrules.GameDelayTestRule
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
@@ -20,6 +21,9 @@ class QuickSortViewModelTest {
 
     @get:Rule
     val coroutinesTestRule = CoroutinesTestRule()
+
+    @get:Rule
+    val gameDelayRule = GameDelayTestRule()
 
     @get:Rule
     val mockkRule = MockKRule(this)
@@ -68,7 +72,7 @@ class QuickSortViewModelTest {
     @Test
     fun `startSorting updates listToSort variable correctly`() = runTest {
         // arrange
-        every { quickSort.runQuickSort(any(), any(), any()) } returns flowOf(
+        every { quickSort.runQuickSort(any(), any(), any(), any()) } returns flowOf(
             QuickSortDomainModel(
                 currentPivot = 0,
                 currentLeft = 1,

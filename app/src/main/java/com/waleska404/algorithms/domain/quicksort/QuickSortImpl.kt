@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class QuickSortImpl @Inject constructor() : QuickSort {
 
-    override fun runQuickSort(list: MutableList<Int>, start: Int, end: Int): Flow<QuickSortDomainModel> = flow {
+    override fun runQuickSort(list: MutableList<Int>, start: Int, end: Int, delayInMs: Long): Flow<QuickSortDomainModel> = flow {
         if (start < end) {
             val pivot = start
             var l = start + 1
@@ -31,7 +31,7 @@ class QuickSortImpl @Inject constructor() : QuickSort {
                         sortingSubarray = Pair(start, end),
                     )
                 )
-                delay(500)
+                delay(delayInMs)
                 if (list[l] <= list[pivot]) l++
                 if (list[r] >= list[pivot]) r--
             }
@@ -46,14 +46,14 @@ class QuickSortImpl @Inject constructor() : QuickSort {
                     sortingSubarray = Pair(start, end),
                 )
             )
-            delay(500)
+            delay(delayInMs)
             val leftSubArrayIsSmaller = r - 1 - start < end - (r + 1)
             if (leftSubArrayIsSmaller) {
-                runQuickSort(list, start, r - 1).collect { info -> emit(info) }
-                runQuickSort(list, r + 1, end).collect { info -> emit(info) }
+                runQuickSort(list, start, r - 1, delayInMs).collect { info -> emit(info) }
+                runQuickSort(list, r + 1, end, delayInMs).collect { info -> emit(info) }
             } else {
-                runQuickSort(list, r + 1, end).collect { info -> emit(info) }
-                runQuickSort(list, start, r - 1).collect { info -> emit(info) }
+                runQuickSort(list, r + 1, end, delayInMs).collect { info -> emit(info) }
+                runQuickSort(list, start, r - 1, delayInMs).collect { info -> emit(info) }
             }
         } else {
             if (start < list.size) {

@@ -21,7 +21,7 @@ class QuickSortTest {
         listMap.forEach { (list, sortedList) ->
             val myList = list.toMutableList()
             runBlocking {
-                quickSort.runQuickSort(myList, 0, myList.size - 1).collect {}
+                quickSort.runQuickSort(myList, 0, myList.size - 1, 0).collect {}
             }
             assertEquals(myList, sortedList)
         }

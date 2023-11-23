@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class BubbleSortImpl @Inject constructor() : BubbleSort {
 
-    override fun runBubbleSort(list: MutableList<Int>): Flow<BubbleSortDomainModel> = flow {
+    override fun runBubbleSort(list: MutableList<Int>, delayInMs: Long): Flow<BubbleSortDomainModel> = flow {
         var size = list.size - 1
         while (size > 0) {
             var innerIndex = 0
@@ -24,7 +24,7 @@ class BubbleSortImpl @Inject constructor() : BubbleSort {
                 } else {
                     emit(BubbleSortDomainModel(currentItem = innerIndex, shouldSwap = false))
                 }
-                delay(500)
+                delay(delayInMs)
                 innerIndex += 1
             }
             size -= 1

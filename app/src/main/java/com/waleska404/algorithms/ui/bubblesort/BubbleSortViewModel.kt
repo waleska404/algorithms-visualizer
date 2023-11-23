@@ -3,6 +3,7 @@ package com.waleska404.algorithms.ui.bubblesort
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.bubblesort.BubbleSort
+import com.waleska404.algorithms.ui.core.config.GAME_DELAY_IN_MS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,7 @@ class BubbleSortViewModel @Inject constructor(
         val dataList = _listToSort.value.toDataList()
         _isSorting.value = true
         viewModelScope.launch {
-            bubbleSort.runBubbleSort(dataList).collect { bubbleSortInfo ->
+            bubbleSort.runBubbleSort(dataList, GAME_DELAY_IN_MS).collect { bubbleSortInfo ->
                 val index = bubbleSortInfo.currentItem
 
                 // mark current items as being compared
@@ -49,7 +50,7 @@ class BubbleSortViewModel @Inject constructor(
                 newListCompare[index] = newListCompare[index].copy(isCurrentlyCompared = true)
                 if(index < newListCompare.size-1) newListCompare[index + 1] = newListCompare[index + 1].copy(isCurrentlyCompared = true)
                 _listToSort.value = _listToSort.value.copy(list = newListCompare)
-                delay(500)
+                delay(GAME_DELAY_IN_MS)
 
                 // swap if necessary
                 if (bubbleSortInfo.shouldSwap) {
@@ -60,7 +61,7 @@ class BubbleSortViewModel @Inject constructor(
                     _listToSort.value = _listToSort.value.copy(list = newListSwap)
                 }
 
-                delay(500)
+                delay(GAME_DELAY_IN_MS)
                 // uncheck as being compared
                 val newList = _listToSort.value.list.toMutableList()
                 newList[index] = newList[index].copy(isCurrentlyCompared = false)

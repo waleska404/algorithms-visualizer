@@ -3,6 +3,7 @@ package com.waleska404.algorithms.ui.bubblesort
 import com.waleska404.algorithms.domain.bubblesort.BubbleSort
 import com.waleska404.algorithms.domain.bubblesort.BubbleSortDomainModel
 import com.waleska404.algorithms.testrules.CoroutinesTestRule
+import com.waleska404.algorithms.testrules.GameDelayTestRule
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
@@ -23,6 +24,9 @@ class BubbleSortViewModelTest {
 
     @get:Rule
     val coroutinesTestRule = CoroutinesTestRule()
+
+    @get:Rule
+    val gameDelayRule = GameDelayTestRule()
 
     @get:Rule
     val mockkRule = MockKRule(this)
@@ -71,7 +75,7 @@ class BubbleSortViewModelTest {
     @Test
     fun `startSorting updates listToSort variable correctly`()  = runTest {
         // arrange
-        every { bubbleSort.runBubbleSort(any()) } returns flowOf(
+        every { bubbleSort.runBubbleSort(any(), any()) } returns flowOf(
             BubbleSortDomainModel(
                 currentItem = 0,
                 shouldSwap = false

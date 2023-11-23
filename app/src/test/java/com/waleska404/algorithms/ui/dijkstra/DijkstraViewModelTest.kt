@@ -6,6 +6,7 @@ import com.waleska404.algorithms.domain.dijkstra.Dijkstra
 import com.waleska404.algorithms.domain.dijkstra.DijkstraDomainModel
 import com.waleska404.algorithms.domain.dijkstra.Position
 import com.waleska404.algorithms.testrules.CoroutinesTestRule
+import com.waleska404.algorithms.testrules.GameDelayTestRule
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
@@ -25,6 +26,9 @@ import org.junit.Test
 class DijkstraViewModelTest {
     @get:Rule
     val coroutinesTestRule = CoroutinesTestRule()
+
+    @get:Rule
+    val gameDelayRule = GameDelayTestRule()
 
     @get:Rule
     val mockkRule = MockKRule(this)

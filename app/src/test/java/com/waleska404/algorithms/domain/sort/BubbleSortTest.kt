@@ -20,7 +20,7 @@ class BubbleSortTest {
         listMap.forEach { (list, sortedList) ->
             val myList = list.toMutableList()
             runBlocking {
-                bubbleSort.runBubbleSort(myList).collect {}
+                bubbleSort.runBubbleSort(myList, 0).collect {}
             }
             assertEquals(myList, sortedList)
         }

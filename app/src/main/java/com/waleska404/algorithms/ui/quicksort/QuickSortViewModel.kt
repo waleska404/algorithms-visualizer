@@ -3,6 +3,7 @@ package com.waleska404.algorithms.ui.quicksort
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.quicksort.QuickSort
+import com.waleska404.algorithms.ui.core.config.GAME_DELAY_IN_MS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +48,7 @@ class QuickSortViewModel @Inject constructor(
         var lastLeftPointer = 0
         var lastRightPointer = 0
         viewModelScope.launch {
-            quickSort.runQuickSort(dataList, 0, dataList.size - 1).collect { quickSortInfo ->
+            quickSort.runQuickSort(dataList, 0, dataList.size - 1, GAME_DELAY_IN_MS).collect { quickSortInfo ->
                 // mark the elements that are being considered for the sorting
                 checkInSortingRange(quickSortInfo.sortingSubarray)
 
@@ -58,7 +59,7 @@ class QuickSortViewModel @Inject constructor(
                         val newListCompare = _listToSort.value.list.toMutableList()
                         newListCompare[pivot] = newListCompare[pivot].copy(isPivot = true)
                         _listToSort.value = _listToSort.value.copy(list = newListCompare)
-                        delay(500)
+                        delay(GAME_DELAY_IN_MS)
                         val newListSorted = _listToSort.value.list.toMutableList()
                         newListSorted[pivot] = newListSorted[pivot].copy(isPivot = false, alreadyOrdered = true)
                         _listToSort.value = _listToSort.value.copy(list = newListSorted)
@@ -83,7 +84,7 @@ class QuickSortViewModel @Inject constructor(
                     newListCompare[leftPointer] = newListCompare[leftPointer].copy(isLeftPointer = true)
                     newListCompare[rightPointer] = newListCompare[rightPointer].copy(isRightPointer = true)
                     _listToSort.value = _listToSort.value.copy(list = newListCompare)
-                    delay(500)
+                    delay(GAME_DELAY_IN_MS)
 
                     // swap if necessary
                     if (quickSortInfo.shouldSwapPointers) {
@@ -91,7 +92,7 @@ class QuickSortViewModel @Inject constructor(
                     }
                     if (quickSortInfo.shouldSwapPivot) {
                         swapOnCurrentList(pivot, rightPointer)
-                        delay(500)
+                        delay(GAME_DELAY_IN_MS)
                         val newListAfterSwap = _listToSort.value.list.toMutableList()
                         newListAfterSwap[pivot] = newListAfterSwap[pivot].copy(
                             isRightPointer = false,
@@ -107,7 +108,7 @@ class QuickSortViewModel @Inject constructor(
                         )
                         _listToSort.value = _listToSort.value.copy(list = newListAfterSwap)
                     }
-                    delay(500)
+                    delay(GAME_DELAY_IN_MS)
                 }
             }
             _isSorting.value = false
