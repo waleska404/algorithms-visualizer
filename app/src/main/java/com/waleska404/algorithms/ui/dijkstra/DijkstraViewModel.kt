@@ -111,8 +111,8 @@ class DijkstraViewModel @Inject constructor(
     }
 
     fun animatedShortestPath() {
+        _isVisualizing.value = true
         viewModelScope.launch {
-            _isVisualizing.value = true
             dijkstra.runDijkstra(
                 gridSize = NUMBER_OF_ROWS * NUMBER_OF_COLUMNS,
                 numberOfRows = NUMBER_OF_ROWS,
