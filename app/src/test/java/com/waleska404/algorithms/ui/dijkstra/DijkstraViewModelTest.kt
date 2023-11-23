@@ -52,8 +52,8 @@ class DijkstraViewModelTest {
     fun `clear function updates correctly walls variable`() {
         viewModel.randomizeWalls()
         viewModel.clear()
-        val walls = getWallsFromCellList(viewModel.gridState.value.toLinearGrid())
-        Assert.assertEquals(0, walls.size)
+        val walls = getWallsFromCellList(viewModel.gridState.value.toLinearGrid()).count { it }
+        Assert.assertEquals(0, walls)
     }
 
     @Test
