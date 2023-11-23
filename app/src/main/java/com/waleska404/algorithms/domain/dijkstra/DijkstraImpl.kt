@@ -27,22 +27,22 @@ class DijkstraImpl: Dijkstra {
             val unvisitedNodes = MutableList(gridSize) {
                 CellDomainData(
                     id = it,
-                    type = CellType.BACKGROUND,
+                    type = CellDomainType.BACKGROUND,
                     position = getPositionFromIndex(it, numberOfColumns),
                     distance = Int.MAX_VALUE
                 )
             }
             unvisitedNodes[startIndex] = unvisitedNodes[startIndex].copy(
                 distance = 0,
-                type = CellType.START,
+                type = CellDomainType.START,
             )
             unvisitedNodes[finishIndex] = unvisitedNodes[finishIndex].copy(
-                type = CellType.FINISH
+                type = CellDomainType.FINISH
             )
             walls.forEach {
                 val index = getIndexFromPosition(it, numberOfColumns)
                 unvisitedNodes[index] = unvisitedNodes[index].copy(
-                    type = CellType.WALL
+                    type = CellDomainType.WALL
                 )
             }
             val allNodes = unvisitedNodes.toMutableList()
@@ -53,7 +53,7 @@ class DijkstraImpl: Dijkstra {
                 val closestCell = unvisitedNodes.shift()
 
                 // wall case
-                if (closestCell.type == CellType.WALL) continue
+                if (closestCell.type == CellDomainType.WALL) continue
 
                 // target not reachable case
                 if (closestCell.distance == Int.MAX_VALUE) {
@@ -67,11 +67,10 @@ class DijkstraImpl: Dijkstra {
                 }
 
                 // background case
-                if(closestCell.type != CellType.WALL) {
+                if(closestCell.type != CellDomainType.WALL) {
                     emit(
                         DijkstraDomainModel(
                             position = closestCell.position,
-                            type = closestCell.type,
                             visited = true,
                             finished = false
                         )

@@ -5,7 +5,7 @@ data class Position(
     val column: Int
 )
 
-enum class CellType {
+enum class CellDomainType {
     START,
     FINISH,
     WALL,
@@ -14,7 +14,7 @@ enum class CellType {
 
 data class CellDomainData(
     var id: Int,
-    var type: CellType,
+    var type: CellDomainType,
     val position: Position,
     val isVisited: Boolean = false,
     var distance: Int = Int.MAX_VALUE,
@@ -23,7 +23,6 @@ data class CellDomainData(
 
 data class DijkstraDomainModel(
     val position: Position? = null,
-    val type: CellType? = null,
     val visited: Boolean? = null,
     val finished: Boolean,
     val unreachable: Boolean = false,
