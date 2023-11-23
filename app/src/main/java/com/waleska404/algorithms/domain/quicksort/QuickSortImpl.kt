@@ -1,6 +1,5 @@
 package com.waleska404.algorithms.domain.quicksort
 
-import android.util.Log
 import com.waleska404.algorithms.domain.utils.swap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +11,6 @@ class QuickSortImpl @Inject constructor() : QuickSort {
 
     override fun runQuickSort(list: MutableList<Int>, start: Int, end: Int): Flow<QuickSortDomainModel> = flow {
         if (start < end) {
-            Log.i("QuickSort", "RUNQUICKSORT -> start: $start, end: $end")
             val pivot = start
             var l = start + 1
             var r = end

@@ -1,10 +1,8 @@
 package com.waleska404.algorithms.ui.quicksort
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.waleska404.algorithms.domain.quicksort.QuickSort
-import com.waleska404.algorithms.domain.quicksort.QuickSortDomainModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -146,90 +144,6 @@ class QuickSortViewModel @Inject constructor(
         }
         _listToSort.value = _listToSort.value.copy(list = newList)
     }
-
-    private fun logQuickSortInfo(quickSortInfo: QuickSortDomainModel) {
-        Log.i(
-            "MYTAG",
-            "currentPivot: ${quickSortInfo.currentPivot}, " +
-                    "currentLeft: ${quickSortInfo.currentLeft}, " +
-                    "currentRight: ${quickSortInfo.currentRight}, " +
-                    "shouldSwapPointers: ${quickSortInfo.shouldSwapPointers}, " +
-                    "shouldSwapPivot: ${quickSortInfo.shouldSwapPivot}, " +
-                    "sortingSubarray: ${quickSortInfo.sortingSubarray}, "
-        )
-    }
-
-    private fun getFakeSortingList(): QuickSortList {
-        return QuickSortList(
-            list = listOf(
-                QuickSortItem(
-                    id = 0,
-                    isPivot = false,
-                    isLeftPointer = false,
-                    isRightPointer = false,
-                    alreadyOrdered = false,
-                    inSortingRange = false,
-                    value = 87,
-                ),
-                QuickSortItem(
-                    id = 1,
-                    isPivot = false,
-                    isLeftPointer = false,
-                    isRightPointer = false,
-                    alreadyOrdered = false,
-                    inSortingRange = false,
-                    value = 41,
-                ),
-                QuickSortItem(
-                    id = 2,
-                    isPivot = false,
-                    isLeftPointer = false,
-                    isRightPointer = false,
-                    alreadyOrdered = false,
-                    inSortingRange = false,
-                    value = 44,
-                ),
-                QuickSortItem(
-                    id = 3,
-                    isPivot = false,
-                    isLeftPointer = false,
-                    isRightPointer = false,
-                    alreadyOrdered = false,
-                    inSortingRange = false,
-                    value = 59,
-                ),
-                QuickSortItem(
-                    id = 4,
-                    isPivot = false,
-                    isLeftPointer = false,
-                    isRightPointer = false,
-                    alreadyOrdered = false,
-                    inSortingRange = false,
-                    value = 37,
-                ),
-                /*
-                QuickSortItem(
-                    id = 5,
-                    isPivot = false,
-                    isLeftPointer = false,
-                    isRightPointer = false,
-                    alreadyOrdered = false,
-                    inSortingRange = false,
-                    value = 60,
-                ),
-                QuickSortItem(
-                    id = 6,
-                    isPivot = false,
-                    isLeftPointer = false,
-                    isRightPointer = false,
-                    alreadyOrdered = false,
-                    inSortingRange = false,
-                    value = 30,
-                )*/
-            )
-        )
-    }
-
 }
 
 
