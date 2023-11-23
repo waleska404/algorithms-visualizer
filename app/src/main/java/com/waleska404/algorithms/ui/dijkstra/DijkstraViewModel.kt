@@ -115,8 +115,8 @@ class DijkstraViewModel @Inject constructor(
             _isVisualizing.value = true
             dijkstra.runDijkstra(
                 gridSize = NUMBER_OF_ROWS * NUMBER_OF_COLUMNS,
-                row = NUMBER_OF_ROWS,
-                col = NUMBER_OF_COLUMNS,
+                numberOfRows = NUMBER_OF_ROWS,
+                numberOfColumns = NUMBER_OF_COLUMNS,
                 finish = finishPosition,
                 start = startPosition,
                 walls = walls,

@@ -12,8 +12,8 @@ class DijkstraImpl: Dijkstra {
 
     override suspend fun runDijkstra(
         gridSize: Int,
-        row: Int,
-        col: Int,
+        numberOfRows: Int,
+        numberOfColumns: Int,
         start: Position,
         finish: Position,
         walls: List<Position>,
@@ -22,13 +22,13 @@ class DijkstraImpl: Dijkstra {
         return flow {
             // set up initial variables
             val visitedNodesInOrder = mutableListOf<CellDomainData>()
-            val startIndex = getIndexFromPosition(start, col)
-            val finishIndex = getIndexFromPosition(finish, col)
+            val startIndex = getIndexFromPosition(start, numberOfColumns)
+            val finishIndex = getIndexFromPosition(finish, numberOfColumns)
             val unvisitedNodes = MutableList(gridSize) {
                 CellDomainData(
                     id = it,
                     type = CellType.BACKGROUND,
-                    position = getPositionFromIndex(it, col),
+                    position = getPositionFromIndex(it, numberOfColumns),
                     distance = Int.MAX_VALUE
                 )
             }
@@ -40,7 +40,7 @@ class DijkstraImpl: Dijkstra {
                 type = CellType.FINISH
             )
             walls.forEach {
-                val index = getIndexFromPosition(it, col)
+                val index = getIndexFromPosition(it, numberOfColumns)
                 unvisitedNodes[index] = unvisitedNodes[index].copy(
                     type = CellType.WALL
                 )
@@ -98,8 +98,8 @@ class DijkstraImpl: Dijkstra {
                     cell = closestCell,
                     allNodes = allNodes,
                     unvisitedNodes = unvisitedNodes,
-                    row = row,
-                    col = col
+                    row = numberOfRows,
+                    col = numberOfColumns
                 )
                 delay(delayInMs)
             }
