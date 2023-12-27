@@ -13,6 +13,6 @@ class GameDelayTestRule : TestWatcher() {
 
     override fun finished(description: Description) {
         super.finished(description)
-        setGameDelay(Speed.AVERAGE)
+        setGameDelay(Speed.SLOW)
     }
 }
