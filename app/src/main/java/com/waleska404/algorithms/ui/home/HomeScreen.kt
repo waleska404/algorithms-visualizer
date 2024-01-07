@@ -23,7 +23,8 @@ import com.waleska404.algorithms.ui.core.components.CustomCard
 fun HomeScreen(
     navigateToBubbleSort: () -> Unit,
     navigateToQuickSort: () -> Unit,
-    navigateToDijkstra: () -> Unit
+    navigateToDijkstra: () -> Unit,
+    navigateToLinearSearch: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -68,6 +69,14 @@ fun HomeScreen(
             icon = R.drawable.route,
             iconDescription = R.string.sort_descending_icon,
             navigateToAlgorithm = navigateToDijkstra
+        )
+
+        // linear search algorithm
+        AlgorithmListItem(
+            title = R.string.linear_search,
+            icon = R.drawable.route,
+            iconDescription = R.string.sort_descending_icon,
+            navigateToAlgorithm = navigateToLinearSearch
         )
     }
 }
