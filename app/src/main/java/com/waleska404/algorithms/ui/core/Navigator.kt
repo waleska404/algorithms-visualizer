@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.waleska404.algorithms.ui.bubblesort.BubbleSortScreen
 import com.waleska404.algorithms.ui.dijkstra.DijkstraScreen
 import com.waleska404.algorithms.ui.home.HomeScreen
+import com.waleska404.algorithms.ui.linearsearch.LinearSearchScreen
 import com.waleska404.algorithms.ui.quicksort.QuickSortScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -33,6 +34,11 @@ fun ContentWrapper(navigationController: NavHostController) {
                 navigateToDijkstra = {
                     navigationController.navigate(
                         Routes.Dijkstra.route
+                    )
+                },
+                navigateToLinearSearch = {
+                    navigationController.navigate(
+                        Routes.LinearSearch.route
                     )
                 }
             )
@@ -59,6 +65,13 @@ fun ContentWrapper(navigationController: NavHostController) {
                 }
             )
         }
+        composable(route = Routes.LinearSearch.route) {
+            LinearSearchScreen(
+                navigateToHome = {
+                    navigationController.popBackStack()
+                }
+            )
+        }
     }
 }
 
@@ -67,4 +80,5 @@ sealed class Routes(val route: String) {
     object BubbleSort : Routes("bubble_sort")
     object QuickSort : Routes("quick_sort")
     object Dijkstra : Routes("dijkstras_algorithm")
+    object LinearSearch : Routes("linear_search")
 }
