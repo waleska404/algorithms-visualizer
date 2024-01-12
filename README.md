@@ -37,10 +37,16 @@ An algorithms visualizer Android app using Compose and Hilt based on modern Andr
 - JUnit for testing.
 
 ## Features
-- Visualize Bubble Sort.
-- Visualize Quick Sort.
-- Change list size.
-- Randomize values of the list.
+- Sorting Algorithms  
+  - Visualize Bubble Sort.
+  - Visualize Quick Sort.
+  - Change list size.
+  - Randomize values of the list.
+- Path Finding Algorithms
+  - Visualize Dijkstra's algorithm.
+  - Tap a cell in the grid to become a wall.
+  - Create random walls.
+  - Clear the grid. 
 
 ## Future Features (Contributions are welcome!)
 - Space and time complexity information.
