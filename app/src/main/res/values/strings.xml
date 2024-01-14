@@ -10,6 +10,7 @@
     <string name="quick_sort_title">Quick Sort</string>
     <string name="home_screen_title">Algorithms Visualization</string>
     <string name="dijkstras_algorithm">Dijkstra\'s Algorithm</string>
+    <string name="linear_search">Linear Search</string>
     <string name="start">Start</string>
     <string name="finish">Finish</string>
     <string name="visited">Visited</string>
@@ -18,8 +19,11 @@
     <string name="broom_icon">broom icon</string>
     <string name="shines_icon">shine icon</string>
     <string name="clear">Clear</string>
+    <string name="reset">Reset</string>
     <string name="run">Run</string>
     <string name="target_icon">target icon</string>
     <string name="down_arrow_icon">down arrow icon</string>
     <string name="left_arrow_icon">left arrow icon</string>
+    <string name="step">Step</string>
+    <string name="search_key">Search Key:</string>
 </resources>
